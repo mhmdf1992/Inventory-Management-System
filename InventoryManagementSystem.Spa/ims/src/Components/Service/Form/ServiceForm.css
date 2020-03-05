@@ -1,0 +1,33 @@
+.service-form .row{
+    height: 30px;
+}
+
+.service-form .row-2{
+    height: 60px;
+}
+
+.service-form .form-input{
+    border: 0;
+    border-bottom: 1px #e4e4e4 solid;
+}
+
+.service-form .form-input.full-width{
+    width: 100%;
+}
+
+.service-form .footer{
+    height: 30px;
+}
+
+.service-form .save{
+    border-radius: 4px;
+    padding: 5px 10px 5px 10px;
+    float: right;
+    border: #e4e4e4 2px solid;
+    cursor: pointer;
+    float: right;
+}
+
+.service-form .save:hover{
+    opacity: 0.7;
+}

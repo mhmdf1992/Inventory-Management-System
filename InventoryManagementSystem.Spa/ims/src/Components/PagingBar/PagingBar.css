@@ -1,0 +1,26 @@
+.paging-bar{
+    text-align: center;
+}
+
+.nav-button{
+    border-radius: 4px;
+    padding: 5px 10px 5px 10px;
+    border: #e4e4e4 2px solid;
+    box-shadow: 0 0 10px 0 #f0ecec;
+    background-color: #ffffff;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+.nav-button:hover{
+    opacity: 0.7;
+}
+
+.nav-button.active{
+    color: #ffffff;
+    background-color: #f48024;
+}
+
+.nav-button.disabled{
+    cursor: not-allowed;
+}

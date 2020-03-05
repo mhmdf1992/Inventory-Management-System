@@ -1,0 +1,27 @@
+.list-control-panel{
+    text-align: right;
+}
+
+.list-control-panel .new{
+    border-radius: 4px;
+    padding: 5px 10px 5px 10px;
+    border: #e4e4e4 2px solid;
+    cursor: pointer;
+    box-shadow: 0 0 10px 0 #f0ecec;
+    background-color: #ffffff;
+}
+
+.list-control-panel .new:hover{
+    opacity: 0.7;
+}
+
+.list-control-panel .search{
+    border: 0;
+    border-bottom:#e4e4e4 2px solid;
+    vertical-align: middle;
+    margin-right: 50px;
+}
+
+.list-control-panel .search-button:hover{
+    opacity: 0.7;
+}
