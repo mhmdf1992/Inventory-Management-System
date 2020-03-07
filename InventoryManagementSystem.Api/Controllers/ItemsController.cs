@@ -3,7 +3,6 @@ using System.Linq;
 using AutoMapper;
 using InventoryManagementSystem.Api.DAL.UnitOfWork;
 using InventoryManagementSystem.Api.DTOs;
-using InventoryManagementSystem.Api.Models;
 using InventoryManagementSystem.Api.Models.Product.Tangible;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -38,13 +37,11 @@ namespace InventoryManagementSystem.Api.Controllers
             [FromQuery] ItemDTO item,
             [FromQuery] int skip = 0, [FromQuery] int take = 50)
         {
-            var items = unitOfWork.ItemRepository.Get(filter: i => !i.IsDeleted);
-
-            if(item != null)
-                items = items
-                    .Where(i => i.Code.Contains(item.Code) 
+            var items = unitOfWork.ItemRepository
+                .Get(filter: i => !i.IsDeleted 
+                    && (i.Code.Contains(item.Code)
                         || i.Description.Contains(item.Description)
-                        || i.Price == item.Price);
+                        || i.Price == item.Price));
 
             Response.Headers.Add("X-Pagination", 
                 JsonConvert.SerializeObject(new {total = items.Count()}));

@@ -38,13 +38,11 @@ namespace InventoryManagementSystem.Api.Controllers
             [FromQuery] ServiceDTO service,
             [FromQuery] int skip = 0, [FromQuery] int take = 50)
         {
-            var services = unitOfWork.ServiceRepository.Get(filter: i => !i.IsDeleted);
-
-            if(service != null)
-                services = services
-                    .Where(i => i.Code.Contains(service.Code) 
+            var services = unitOfWork.ServiceRepository
+                .Get(filter: i => !i.IsDeleted 
+                    && (i.Code.Contains(service.Code)
                         || i.Description.Contains(service.Description)
-                        || i.Price == service.Price);
+                        || i.Price == service.Price));
 
             Response.Headers.Add("X-Pagination", 
                 JsonConvert.SerializeObject(new {total = services.Count()}));
