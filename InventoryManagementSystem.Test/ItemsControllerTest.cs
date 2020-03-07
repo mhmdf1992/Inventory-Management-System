@@ -141,6 +141,23 @@ namespace InventoryManagementSystem.Test
             var actionResult = controller.Delete(null);
 
             Assert.IsType<NotFoundResult>(actionResult.Result);
-        } 
+        }
+
+        [Fact]
+        public void TestFind_ResultIsOkObject_ValueIsListOfItemsDTO()
+        {
+            mapper.Setup(x => 
+                x.Map<IEnumerable<ItemDTO>>(It.IsAny<IEnumerable<Item>>())).Returns(new List<ItemDTO>());
+
+            unitOfWork.Setup(
+                x => x.ItemRepository.Get( It.IsAny<Expression<Func<Item, bool>>>(),
+                It.IsAny<Func<IQueryable<Item>, IOrderedQueryable<Item>>>(),
+                It.IsAny<string>())).Returns(new List<Item>());
+
+            var actionResult = controller.Find(itemDto);
+
+            Assert.IsType<OkObjectResult>(actionResult.Result);
+            Assert.IsType<List<ItemDTO>>(((OkObjectResult)actionResult.Result).Value);
+        }
     }
 }
