@@ -22,6 +22,18 @@ import ServiceForm from './Components/Service/Form/ServiceForm';
 import ServiceService from './Services/ServiceService';
 import ServiceModel from './Models/ServiceModel';
 
+//SupplierList dependencies
+import Supplier from './Components/Supplier/Supplier/Supplier';
+import SupplierForm from './Components/Supplier/Form/SupplierForm';
+import SupplierService from './Services/SupplierService';
+import SupplierModel from './Models/SupplierModel';
+
+//ClientList dependencies
+import Client from './Components/Client/Client/Client';
+import ClientForm from './Components/Client/Form/ClientForm';
+import ClientService from './Services/ClientService';
+import ClientModel from './Models/ClientModel';
+
 //hoc Itemlist
 const ItemModal = Modal(ItemForm);
 const ItemList = List(ListControlPanel, ItemModal, Item);
@@ -29,6 +41,14 @@ const ItemList = List(ListControlPanel, ItemModal, Item);
 //hoc Servicelist
 const ServiceModal = Modal(ServiceForm);
 const ServiceList = List(ListControlPanel, ServiceModal, Service);
+
+//hoc Supplierlist
+const SupplierModal = Modal(SupplierForm);
+const SupplierList = List(ListControlPanel, SupplierModal, Supplier);
+
+//hoc Clientlist
+const ClientModal = Modal(ClientForm);
+const ClientList = List(ListControlPanel, ClientModal, Client);
 
 function App() {
   return (
@@ -46,6 +66,12 @@ function App() {
           </Route>
           <Route path="/services">
             <ServiceList service={ServiceService} model={ServiceModel} pageSize={30}/>
+          </Route>
+          <Route path="/suppliers">
+            <SupplierList service={SupplierService} model={SupplierModel} pageSize={30}/>
+          </Route>
+          <Route path="/clients">
+            <ClientList service={ClientService} model={ClientModel} pageSize={30}/>
           </Route>
         </div>
       </Router>

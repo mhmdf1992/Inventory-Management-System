@@ -1,0 +1,33 @@
+.supplier-form .row{
+    height: 30px;
+}
+
+.supplier-form .row-2{
+    height: 60px;
+}
+
+.supplier-form .form-input{
+    border: 0;
+    border-bottom: 1px #e4e4e4 solid;
+}
+
+.supplier-form .form-input.full-width{
+    width: 100%;
+}
+
+.supplier-form .footer{
+    height: 30px;
+}
+
+.supplier-form .save{
+    border-radius: 4px;
+    padding: 5px 10px 5px 10px;
+    float: right;
+    border: #e4e4e4 2px solid;
+    cursor: pointer;
+    float: right;
+}
+
+.supplier-form .save:hover{
+    opacity: 0.7;
+}

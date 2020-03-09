@@ -69,7 +69,7 @@ const List = (ControlPanel, Modal, Item) =>{
                         <ControlPanel onAdd={() => this.showEditModal(this.model)}
                             model={this.model}
                             onChange={(item) => this.handleChangeFind(item)}/>
-                        <Modal title={"Edit"}
+                        <Modal title={`Edit ${Item.name}`}
                             show={this.state.editModal.show}
                             onClose={() => this.hideEditModal()}
                             data={this.state.editModal.item}

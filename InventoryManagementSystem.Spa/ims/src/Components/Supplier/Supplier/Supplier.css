@@ -1,0 +1,50 @@
+.supplier{
+    height: 50px;
+    padding: 10px;
+    opacity: 0.7;
+    border-radius: 4px;
+    border-left: #f48024 3px solid;
+    box-shadow: 0 0 10px 0 #f0ecec;
+    position: relative;
+}
+
+.supplier .title{
+    display: inline-block;
+    margin: 0;
+    padding: 0;
+}
+
+.supplier .telephone{
+    display: inline-block;
+    margin-left: 10px;
+    font-size: 10px;
+}
+
+.supplier .email{
+    display: block;
+    opacity: 0.7;
+}
+
+.supplier .location{
+    display: block;
+    opacity: 0.7;
+}
+
+.supplier .delete{
+    font-weight: bold;
+    position: absolute;
+    right: 5px;
+    top:0;
+    opacity: 0.7;
+    visibility: hidden;
+    cursor: pointer;
+}
+
+.supplier:hover{
+    background-color: #f0ecec;
+    cursor: pointer;
+}
+
+.supplier:hover .delete{
+    visibility: visible;
+}
