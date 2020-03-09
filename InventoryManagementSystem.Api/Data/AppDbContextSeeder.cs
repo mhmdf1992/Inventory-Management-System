@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using InventoryManagementSystem.Api.DAL.UnitOfWork;
+using InventoryManagementSystem.Api.Models.Contact.Client;
+using InventoryManagementSystem.Api.Models.Contact.Supplier;
 using InventoryManagementSystem.Api.Models.Product;
 using InventoryManagementSystem.Api.Models.Product.Tangible;
 
@@ -75,6 +77,24 @@ namespace InventoryManagementSystem.Api.Data
                     new Service(){Id = 25, Description = "legal advice", Code = "s00025", Price = 2},
                 };
                 seeds.ForEach(service => unitOfWork.ServiceRepository.Insert(service));
+            }
+            
+            if(! unitOfWork.SupplierRepository.Any()){
+                List<Supplier> seeds = new List<Supplier>(){
+                    new Supplier() {Id = 1, Name = "Chopachops", Telephone = "961 3 822 106", Location = "Green fields - wall street 101 GF"},
+                    new Supplier() {Id = 2, Name = "Mobili Cruz", Telephone = "961 3 822 106", Location = "Green fields - wall street 101 GF"},
+                    new Supplier() {Id = 3, Name = "Silva Group", Telephone = "961 3 822 106", Location = "Green fields - wall street 101 GF"}
+                };
+                seeds.ForEach(s => unitOfWork.SupplierRepository.Insert(s));
+            }
+
+            if(! unitOfWork.ClientRepository.Any()){
+                List<Client> seeds = new List<Client>(){
+                    new Client() {Id = 1, Name = "Marco Verati", Telephone = "961 3 822 106", Location = "Green fields - wall street 101 GF"},
+                    new Client() {Id = 2, Name = "Benjamin Stone", Telephone = "961 3 822 106", Location = "Green fields - wall street 101 GF"},
+                    new Client() {Id = 3, Name = "Bernardo Silva", Telephone = "961 3 822 106", Location = "Green fields - wall street 101 GF"}
+                };
+                seeds.ForEach(s => unitOfWork.ClientRepository.Insert(s));
             }
             
             unitOfWork.Save();

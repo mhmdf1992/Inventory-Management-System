@@ -2,6 +2,8 @@ using AutoMapper;
 using InventoryManagementSystem.Api.DAL.Repository;
 using InventoryManagementSystem.Api.DAL.UnitOfWork;
 using InventoryManagementSystem.Api.Data;
+using InventoryManagementSystem.Api.Models.Contact.Client;
+using InventoryManagementSystem.Api.Models.Contact.Supplier;
 using InventoryManagementSystem.Api.Models.Product;
 using InventoryManagementSystem.Api.Models.Product.Tangible;
 using Microsoft.AspNetCore.Builder;
@@ -29,8 +31,12 @@ namespace InventoryManagementSystem.Api
                 options.UseSqlite(Configuration
                     .GetConnectionString("DefaultConnection")));
             services.AddAutoMapper(typeof(Startup));
+
             services.AddScoped<IRepository<Item>, AppDbContextRepository<Item>>();
             services.AddScoped<IRepository<Service>, AppDbContextRepository<Service>>();
+            services.AddScoped<IRepository<Supplier>, AppDbContextRepository<Supplier>>();
+            services.AddScoped<IRepository<Client>, AppDbContextRepository<Client>>();
+
             services.AddScoped<IUnitOfWork, AppDbContextUnitOfWork>();
             services.AddScoped<ISeeder, AppDbContextSeeder>();
 
