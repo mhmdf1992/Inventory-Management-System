@@ -20,7 +20,7 @@ class ItemForm extends Component{
         return (
             <div className="item-form">
                 <div className="row-5">
-                    <img className="image" src={this.state.imageBase64} />
+                    <img alt={this.state.description} className="image" src={this.state.imageBase64} />
                     <label htmlFor="select-image" className="select-image">Select</label>
                     <input id="select-image" type="file" className="select-image-file" accept="image/*"
                         onChange={(e) => {Helpers.getBase64(e.target.files[0],

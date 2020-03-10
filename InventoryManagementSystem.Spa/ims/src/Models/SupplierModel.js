@@ -5,8 +5,7 @@ const SupplierModel = {
     telephone: '',
     location: '',
     toQueryString(){
-        return `?id=${this.id}&name=${this.name}&email=${this.email}
-            &telephone=${this.telephone}&location=${this.location}`;
+        return `?id=${this.id}&name=${this.name}&email=${this.email}&telephone=${this.telephone}&location=${this.location}`;
     },
     assignText(val){
         return Object.keys(this)

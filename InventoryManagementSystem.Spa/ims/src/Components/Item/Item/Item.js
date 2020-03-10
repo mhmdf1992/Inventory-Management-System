@@ -7,7 +7,7 @@ const Item = (props) => {
             onClick={(e) => {props.onEdit(props.item.id)}}>
                 <h4>{props.item.code}</h4>
                 <span>${props.item.price}</span>
-                <img className="item-image" src={props.item.imageBase64}></img>
+                <img alt={props.item.description} className="item-image" src={props.item.imageBase64}></img>
                 <span>{props.item.description}</span>
                 <span 
                     onClick={(e) => {
