@@ -5,21 +5,21 @@ using InventoryManagementSystem.Api.Models.Product.Tangible;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 
-namespace InventoryManagementSystem.Test
+namespace InventoryManagementSystem.Test.RepositoryTest
 {
-     public class AppDbContextRepositoryTest
+     public class EntityRepositoryTest
     {
         AppDbContext dbContext;
         IRepository<Item> itemRepository;
         Item item;
-        public AppDbContextRepositoryTest()
+        public EntityRepositoryTest()
         {
             dbContext = new AppDbContext(
                 new DbContextOptionsBuilder<AppDbContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
                     .Options
             );
-            itemRepository = new AppDbContextRepository<Item>(dbContext);
+            itemRepository = new EntityRepository<Item>(dbContext);
             item = new Item() {Id = 1, Description = "snips 25g", Code = "0001", Price = 0.5};
         }
 
@@ -49,7 +49,7 @@ namespace InventoryManagementSystem.Test
         {
             itemRepository.Insert(item);
             dbContext.SaveChanges();
-            Assert.Contains(item, itemRepository.Get());
+            Assert.Contains(item, itemRepository.Get(x => x.Code.Contains(item.Code)));
         }
 
         [Fact]
