@@ -7,10 +7,10 @@ using InventoryManagementSystem.Api.Models.Product.Tangible;
 
 namespace InventoryManagementSystem.Api.Data
 {
-    public class AppDbContextSeeder : ISeeder
+    public class EntitiesSeeder : ISeeder
     {
         internal IUnitOfWork unitOfWork;
-        public AppDbContextSeeder(IUnitOfWork unitOfWork){
+        public EntitiesSeeder(IUnitOfWork unitOfWork){
             this.unitOfWork = unitOfWork;
         }
         public void Seed()

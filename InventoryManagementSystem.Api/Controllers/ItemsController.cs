@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
 using AutoMapper;
-using InventoryManagementSystem.Api.DAL.UnitOfWork;
 using InventoryManagementSystem.Api.DTOs;
 using InventoryManagementSystem.Api.Models.Product.Tangible;
+using InventoryManagementSystem.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -13,101 +12,92 @@ namespace InventoryManagementSystem.Api.Controllers
     [ApiController]
     public class ItemsController : ControllerBase
     {
-        protected readonly IUnitOfWork unitOfWork;
+        protected readonly EntityService<Item> entityService;
         protected readonly IMapper mapper;
-        public ItemsController(IUnitOfWork unitOfWork, IMapper mapper)
+        public ItemsController(EntityService<Item> entityService, IMapper mapper)
         {
-            this.unitOfWork = unitOfWork;
+            this.entityService = entityService;
             this.mapper = mapper;
         }
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<ItemDTO>> Get(
-            [FromQuery] int skip = 0, [FromQuery] int take = 50)
-        {
-            var items = unitOfWork.ItemRepository.Get(filter: i => !i.IsDeleted);
+            [FromQuery] int skip = 0, [FromQuery] int take = 50){
+            var items = entityService.Get(skip, take);
 
             Response.Headers.Add("X-Pagination", 
-                JsonConvert.SerializeObject(new {total = items.Count()}));
-            return Ok(mapper.Map<IEnumerable<ItemDTO>>(items.Skip(skip).Take(take)));
+                JsonConvert.SerializeObject(new {total = items.Total}));
+
+            return Ok(mapper.Map<IEnumerable<ItemDTO>>(items));
         }
 
         [HttpGet("find")]
         public ActionResult<IEnumerable<ItemDTO>> Find(
             [FromQuery] ItemDTO item,
-            [FromQuery] int skip = 0, [FromQuery] int take = 50)
-        {
-            var items = unitOfWork.ItemRepository
-                .Get(filter: i => !i.IsDeleted 
-                    && (i.Code.Contains(item.Code)
-                        || i.Description.Contains(item.Description)
-                        || i.Price == item.Price));
-
+            [FromQuery] int skip = 0, [FromQuery] int take = 50){
+            if(item == null)
+                return BadRequest();
+            
+            var items = entityService.Find(mapper.Map<Item>(item), skip, take);
+            
             Response.Headers.Add("X-Pagination", 
-                JsonConvert.SerializeObject(new {total = items.Count()}));
-            return Ok(mapper.Map<IEnumerable<ItemDTO>>(items.Skip(skip).Take(take)));
+                JsonConvert.SerializeObject(new {total = items.Total}));
+
+            return Ok(mapper.Map<IEnumerable<ItemDTO>>(items));
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<ItemDTO> Get([FromRoute] long? id)
-        {
-            var result = id == null ? null : unitOfWork.ItemRepository.Get(id);
-            if(result == null)
+        public ActionResult<ItemDTO> Get([FromRoute] long? id){
+            if(id == null)
+                return BadRequest();
+
+            var item = entityService.Get(id.Value);
+
+            if(item == null)
                 return NotFound();
-            return Ok(mapper.Map<ItemDTO>(result));
+
+            return Ok(mapper.Map<ItemDTO>(item));
         }
 
         [HttpPost]
-        public ActionResult<long> Post([FromBody] ItemDTO itemDto)
-        {
+        public ActionResult<long> Post([FromBody] ItemDTO itemDto){
             if(! ModelState.IsValid || itemDto == null)
-                return BadRequest(ModelState);
+                return BadRequest();
             
-            var item = mapper.Map<Item>(itemDto);
+            entityService.Insert(mapper.Map<Item>(itemDto)).Save();
 
-            unitOfWork.ItemRepository.Insert(item);
-            unitOfWork.Save();
-
-            return Ok(item.Id);
+            return Ok();
         }
 
         [HttpPut("{id}")]
-        public ActionResult<long> Put([FromRoute] long? id, [FromBody] ItemDTO itemDto)
-        {
+        public ActionResult<long> Put([FromRoute] long? id, [FromBody] ItemDTO itemDto){
             if (! ModelState.IsValid || id == null || itemDto == null )
-                return BadRequest(ModelState);
+                return BadRequest();
 
-            var itemToUpdate = unitOfWork.ItemRepository.Get(id);
+            var item = entityService.Get(id.Value);
             
-            if(itemToUpdate == null)
+            if(item == null)
                 return NotFound();
-            
-            var item = mapper.Map<Item>(itemDto);
 
-            itemToUpdate.Code = item.Code;
-            itemToUpdate.Price = item.Price;
-            itemToUpdate.Description = item.Description;
-            itemToUpdate.ImageBase64 = item.ImageBase64;
+            entityService.Update(item, mapper.Map<Item>(itemDto)).Save();
 
-            unitOfWork.ItemRepository.Update(itemToUpdate);
-            unitOfWork.Save();
-
-            return Ok(itemToUpdate.Id);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<long> Delete([FromRoute] long? id)
-        {
-            var itemToDelete = id == null ? null : unitOfWork.ItemRepository.Get(id);
+        public ActionResult<long> Delete([FromRoute] long? id){
+            if(id == null)
+                return BadRequest();
 
-            if(itemToDelete == null)
+            var item = entityService.Get(id.Value);
+
+            if(item == null)
                 return NotFound();
 
-            unitOfWork.ItemRepository.Delete(itemToDelete);
-            unitOfWork.Save();
+            entityService.Delete(item).Save();
 
-            return Ok(itemToDelete.Id);
+            return Ok();
         }
     }
 }

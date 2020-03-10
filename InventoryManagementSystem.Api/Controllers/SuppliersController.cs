@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
 using AutoMapper;
-using InventoryManagementSystem.Api.DAL.UnitOfWork;
 using InventoryManagementSystem.Api.DTOs;
 using InventoryManagementSystem.Api.Models.Contact.Supplier;
+using InventoryManagementSystem.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -13,102 +12,92 @@ namespace InventoryManagementSystem.Api.Controllers
     [ApiController]
     public class SuppliersController : ControllerBase
     {
-        protected readonly IUnitOfWork unitOfWork;
+        protected readonly EntityService<Supplier> entityService;
         protected readonly IMapper mapper;
-        public SuppliersController(IUnitOfWork unitOfWork, IMapper mapper)
+        public SuppliersController(EntityService<Supplier> entityService, IMapper mapper)
         {
-            this.unitOfWork = unitOfWork;
+            this.entityService = entityService;
             this.mapper = mapper;
         }
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<SupplierDTO>> Get(
-            [FromQuery] int skip = 0, [FromQuery] int take = 50)
-        {
-            var suppliers = unitOfWork.SupplierRepository.Get(filter: i => !i.IsDeleted);
+            [FromQuery] int skip = 0, [FromQuery] int take = 50){
+            var suppliers = entityService.Get(skip, take);
 
             Response.Headers.Add("X-Pagination", 
-                JsonConvert.SerializeObject(new {total = suppliers.Count()}));
-            return Ok(mapper.Map<IEnumerable<SupplierDTO>>(suppliers.Skip(skip).Take(take)));
+                JsonConvert.SerializeObject(new {total = suppliers.Total}));
+
+            return Ok(mapper.Map<IEnumerable<SupplierDTO>>(suppliers));
         }
 
         [HttpGet("find")]
         public ActionResult<IEnumerable<SupplierDTO>> Find(
             [FromQuery] SupplierDTO supplier,
-            [FromQuery] int skip = 0, [FromQuery] int take = 50)
-        {
-            var suppliers = unitOfWork.SupplierRepository
-                .Get(filter: i => !i.IsDeleted 
-                    && (i.Name.Contains(supplier.Name)
-                        || i.Location.Contains(supplier.Location)
-                        || i.Email.Contains(supplier.Email)
-                        || i.Telephone == supplier.Telephone));
+            [FromQuery] int skip = 0, [FromQuery] int take = 50){
+            if(supplier == null)
+                return BadRequest();
 
+            var suppliers = entityService.Find(mapper.Map<Supplier>(supplier), skip, take);
+            
             Response.Headers.Add("X-Pagination", 
-                JsonConvert.SerializeObject(new {total = suppliers.Count()}));
-            return Ok(mapper.Map<IEnumerable<SupplierDTO>>(suppliers.Skip(skip).Take(take)));
+                JsonConvert.SerializeObject(new {total = suppliers.Total}));
+
+            return Ok(mapper.Map<IEnumerable<SupplierDTO>>(suppliers));
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<SupplierDTO> Get([FromRoute] long? id)
-        {
-            var result = id == null ? null : unitOfWork.SupplierRepository.Get(id);
-            if(result == null)
+        public ActionResult<SupplierDTO> Get([FromRoute] long? id){
+            if(id == null)
+                return BadRequest();
+
+            var supplier = entityService.Get(id.Value);
+
+            if(supplier == null)
                 return NotFound();
-            return Ok(mapper.Map<SupplierDTO>(result));
+
+            return Ok(mapper.Map<SupplierDTO>(supplier));
         }
 
         [HttpPost]
-        public ActionResult<long> Post([FromBody] SupplierDTO supplierDto)
-        {
+        public ActionResult<long> Post([FromBody] SupplierDTO supplierDto){
             if(! ModelState.IsValid || supplierDto == null)
-                return BadRequest(ModelState);
+                return BadRequest();
             
-            var supplier = mapper.Map<Supplier>(supplierDto);
+            entityService.Insert(mapper.Map<Supplier>(supplierDto)).Save();
 
-            unitOfWork.SupplierRepository.Insert(supplier);
-            unitOfWork.Save();
-
-            return Ok(supplier.Id);
+            return Ok();
         }
 
         [HttpPut("{id}")]
-        public ActionResult<long> Put([FromRoute] long? id, [FromBody] SupplierDTO supplierDto)
-        {
+        public ActionResult<long> Put([FromRoute] long? id, [FromBody] SupplierDTO supplierDto){
             if (! ModelState.IsValid || id == null || supplierDto == null )
-                return BadRequest(ModelState);
+                return BadRequest();
 
-            var supplierToUpdate = unitOfWork.SupplierRepository.Get(id);
+            var supplier = entityService.Get(id.Value);
             
-            if(supplierToUpdate == null)
+            if(supplier == null)
                 return NotFound();
-            
-            var supplier = mapper.Map<Supplier>(supplierDto);
 
-            supplierToUpdate.Name = supplier.Name;
-            supplierToUpdate.Location = supplier.Location;
-            supplierToUpdate.Email = supplier.Email;
-            supplierToUpdate.Telephone = supplier.Telephone;
+            entityService.Update(supplier, mapper.Map<Supplier>(supplierDto)).Save();
 
-            unitOfWork.SupplierRepository.Update(supplierToUpdate);
-            unitOfWork.Save();
-
-            return Ok(supplierToUpdate.Id);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<long> Delete([FromRoute] long? id)
-        {
-            var supplierToDelete = id == null ? null : unitOfWork.SupplierRepository.Get(id);
+        public ActionResult<long> Delete([FromRoute] long? id){
+            if(id == null)
+                return BadRequest();
 
-            if(supplierToDelete == null)
+            var supplier = entityService.Get(id.Value);
+
+            if(supplier == null)
                 return NotFound();
 
-            unitOfWork.SupplierRepository.Delete(supplierToDelete);
-            unitOfWork.Save();
+            entityService.Delete(supplier).Save();
 
-            return Ok(supplierToDelete.Id);
+            return Ok();
         }
     }
 }

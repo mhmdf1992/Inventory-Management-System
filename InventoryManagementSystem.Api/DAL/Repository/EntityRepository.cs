@@ -8,11 +8,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace InventoryManagementSystem.Api.DAL.Repository
 {
-    public class AppDbContextRepository<T> : IRepository<T> where T : class, IAppDbContextEntity
+    public class EntityRepository<T> : IRepository<T> where T : class, IEntity
     {
         internal AppDbContext dbContext;
         internal DbSet<T> dbSet;
-        public AppDbContextRepository(AppDbContext dbContext)
+        public EntityRepository(AppDbContext dbContext)
         {
             this.dbContext = dbContext;
             this.dbSet = dbContext.Set<T>();

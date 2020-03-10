@@ -7,14 +7,14 @@ using InventoryManagementSystem.Api.Models.Product.Tangible;
 
 namespace InventoryManagementSystem.Api.DAL.UnitOfWork
 {
-    public class AppDbContextUnitOfWork : IUnitOfWork
+    public class EntitiesUnitOfWork : IUnitOfWork
     {
         protected readonly AppDbContext dbContext;
         protected readonly IRepository<Item> itemRepository;
         protected readonly IRepository<Service> serviceRepository;
         protected readonly IRepository<Supplier> supplierRepository;
         protected readonly IRepository<Client> clientRepository;
-        public AppDbContextUnitOfWork(IRepository<Item> itemRepository,
+        public EntitiesUnitOfWork(IRepository<Item> itemRepository,
             IRepository<Service> serviceRepository,
             IRepository<Supplier> supplierRepository,
             IRepository<Client> clientRepository,

@@ -1,9 +1,8 @@
 using System.Collections.Generic;
-using System.Linq;
 using AutoMapper;
-using InventoryManagementSystem.Api.DAL.UnitOfWork;
 using InventoryManagementSystem.Api.DTOs;
 using InventoryManagementSystem.Api.Models.Contact.Client;
+using InventoryManagementSystem.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
@@ -13,102 +12,92 @@ namespace InventoryManagementSystem.Api.Controllers
     [ApiController]
     public class ClientsController : ControllerBase
     {
-        protected readonly IUnitOfWork unitOfWork;
+        protected readonly EntityService<Client> entityService;
         protected readonly IMapper mapper;
-        public ClientsController(IUnitOfWork unitOfWork, IMapper mapper)
+        public ClientsController(EntityService<Client> entityService, IMapper mapper)
         {
-            this.unitOfWork = unitOfWork;
+            this.entityService = entityService;
             this.mapper = mapper;
         }
         // GET api/values
         [HttpGet]
         public ActionResult<IEnumerable<ClientDTO>> Get(
-            [FromQuery] int skip = 0, [FromQuery] int take = 50)
-        {
-            var clients = unitOfWork.ClientRepository.Get(filter: i => !i.IsDeleted);
-
+            [FromQuery] int skip = 0, [FromQuery] int take = 50){
+            var clients = entityService.Get(skip, take);
+            
             Response.Headers.Add("X-Pagination", 
-                JsonConvert.SerializeObject(new {total = clients.Count()}));
-            return Ok(mapper.Map<IEnumerable<ClientDTO>>(clients.Skip(skip).Take(take)));
+                JsonConvert.SerializeObject(new {total = clients.Total}));
+
+            return Ok(mapper.Map<IEnumerable<ClientDTO>>(clients));
         }
 
         [HttpGet("find")]
         public ActionResult<IEnumerable<ClientDTO>> Find(
             [FromQuery] ClientDTO client,
-            [FromQuery] int skip = 0, [FromQuery] int take = 50)
-        {
-            var clients = unitOfWork.ClientRepository
-                .Get(filter: i => !i.IsDeleted 
-                    && (i.Name.Contains(client.Name)
-                        || i.Location.Contains(client.Location)
-                        || i.Email.Contains(client.Email)
-                        || i.Telephone == client.Telephone));
+            [FromQuery] int skip = 0, [FromQuery] int take = 50){
+            if(client == null)
+                return BadRequest();
+                
+            var clients = entityService.Find(mapper.Map<Client>(client), skip, take);
 
             Response.Headers.Add("X-Pagination", 
-                JsonConvert.SerializeObject(new {total = clients.Count()}));
-            return Ok(mapper.Map<IEnumerable<ClientDTO>>(clients.Skip(skip).Take(take)));
+                JsonConvert.SerializeObject(new {total = clients.Total}));
+
+            return Ok(mapper.Map<IEnumerable<ClientDTO>>(clients));
         }
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public ActionResult<ClientDTO> Get([FromRoute] long? id)
-        {
-            var result = id == null ? null : unitOfWork.ClientRepository.Get(id);
-            if(result == null)
+        public ActionResult<ClientDTO> Get([FromRoute] long? id){
+            if(id == null)
+                return BadRequest();
+
+            var client = entityService.Get(id.Value);
+
+            if(client == null)
                 return NotFound();
-            return Ok(mapper.Map<ClientDTO>(result));
+
+            return Ok(mapper.Map<ClientDTO>(client));
         }
 
         [HttpPost]
-        public ActionResult<long> Post([FromBody] ClientDTO clientDto)
-        {
+        public ActionResult<long> Post([FromBody] ClientDTO clientDto){
             if(! ModelState.IsValid || clientDto == null)
-                return BadRequest(ModelState);
+                return BadRequest();
             
-            var client = mapper.Map<Client>(clientDto);
+            entityService.Insert(mapper.Map<Client>(clientDto)).Save();
 
-            unitOfWork.ClientRepository.Insert(client);
-            unitOfWork.Save();
-
-            return Ok(client.Id);
+            return Ok();
         }
 
         [HttpPut("{id}")]
-        public ActionResult<long> Put([FromRoute] long? id, [FromBody] ClientDTO clientDto)
-        {
+        public ActionResult<long> Put([FromRoute] long? id, [FromBody] ClientDTO clientDto){
             if (! ModelState.IsValid || id == null || clientDto == null )
-                return BadRequest(ModelState);
+                return BadRequest();
 
-            var clientToUpdate = unitOfWork.ClientRepository.Get(id);
+            var client = entityService.Get(id.Value);
             
-            if(clientToUpdate == null)
+            if(client == null)
                 return NotFound();
-            
-            var client = mapper.Map<Client>(clientDto);
 
-            clientToUpdate.Name = client.Name;
-            clientToUpdate.Location = client.Location;
-            clientToUpdate.Email = client.Email;
-            clientToUpdate.Telephone = client.Telephone;
+            entityService.Update(client, mapper.Map<Client>(clientDto)).Save();
 
-            unitOfWork.ClientRepository.Update(clientToUpdate);
-            unitOfWork.Save();
-
-            return Ok(clientToUpdate.Id);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
-        public ActionResult<long> Delete([FromRoute] long? id)
-        {
-            var clientToDelete = id == null ? null : unitOfWork.ClientRepository.Get(id);
+        public ActionResult<long> Delete([FromRoute] long? id){
+            if(id == null)
+                return BadRequest();
 
-            if(clientToDelete == null)
+            var client = entityService.Get(id.Value);
+
+            if(client == null)
                 return NotFound();
 
-            unitOfWork.ClientRepository.Delete(clientToDelete);
-            unitOfWork.Save();
+            entityService.Delete(client).Save();
 
-            return Ok(clientToDelete.Id);
+            return Ok();
         }
     }
 }
