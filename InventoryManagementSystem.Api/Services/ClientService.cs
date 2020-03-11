@@ -18,7 +18,7 @@ namespace InventoryManagementSystem.Api.Services
         }
 
         override
-        public PagedList<Client> Find(Client match, int skip, int take){
+        public PagedList<Client> FindMatch(Client match, int skip, int take){
             var clients = unitOfWork.ClientRepository
                 .Get(filter: i => !i.IsDeleted
                     && (i.Name.ToLower().Contains(match.Name.ToLower())

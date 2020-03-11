@@ -11,7 +11,7 @@ namespace InventoryManagementSystem.Api.Services
             this.unitOfWork = unitOfWork;
         }
         public abstract PagedList<T> Get(int skip, int take);
-        public abstract PagedList<T> Find(T match, int skip, int take);
+        public abstract PagedList<T> FindMatch(T match, int skip, int take);
         public abstract T Get(long id);
         public abstract EntityService<T> Insert(T entity);
         public abstract EntityService<T> Update(T entity, T val);

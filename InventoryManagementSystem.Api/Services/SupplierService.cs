@@ -17,7 +17,7 @@ namespace InventoryManagementSystem.Api.Services
         }
 
         override
-        public PagedList<Supplier> Find(Supplier match, int skip, int take){
+        public PagedList<Supplier> FindMatch(Supplier match, int skip, int take){
             var suppliers = unitOfWork.SupplierRepository
                 .Get(filter: i => !i.IsDeleted
                     && (i.Name.ToLower().Contains(match.Name.ToLower())

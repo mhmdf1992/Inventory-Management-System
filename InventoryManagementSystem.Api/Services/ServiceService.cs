@@ -18,7 +18,7 @@ namespace InventoryManagementSystem.Api.Services
         }
 
         override
-        public PagedList<Service> Find(Service match, int skip, int take){
+        public PagedList<Service> FindMatch(Service match, int skip, int take){
             var services = unitOfWork.ServiceRepository
                 .Get(filter: i => !i.IsDeleted
                     && (i.Code.ToLower().Contains(match.Code.ToLower())
