@@ -4,6 +4,7 @@ using InventoryManagementSystem.Api.Models.Contact.Client;
 using InventoryManagementSystem.Api.Models.Contact.Supplier;
 using InventoryManagementSystem.Api.Models.Product;
 using InventoryManagementSystem.Api.Models.Product.Tangible;
+using InventoryManagementSystem.Api.Models.User;
 
 namespace InventoryManagementSystem.Api.DAL.UnitOfWork
 {
@@ -14,15 +15,18 @@ namespace InventoryManagementSystem.Api.DAL.UnitOfWork
         protected readonly IRepository<Service> serviceRepository;
         protected readonly IRepository<Supplier> supplierRepository;
         protected readonly IRepository<Client> clientRepository;
+        protected readonly IRepository<User> userRepository;
         public EntitiesUnitOfWork(IRepository<Item> itemRepository,
             IRepository<Service> serviceRepository,
             IRepository<Supplier> supplierRepository,
             IRepository<Client> clientRepository,
+            IRepository<User> userRepository,
             AppDbContext dbContext){
             this.itemRepository = itemRepository;
             this.serviceRepository = serviceRepository;
             this.supplierRepository = supplierRepository;
             this.clientRepository = clientRepository;
+            this.userRepository = userRepository;
             this.dbContext = dbContext;
         }
         public IRepository<Item> ItemRepository{
@@ -45,6 +49,12 @@ namespace InventoryManagementSystem.Api.DAL.UnitOfWork
         public IRepository<Client> ClientRepository{
             get {
                 return this.clientRepository;
+            }
+        }
+
+        public IRepository<User> UserRepository{
+            get {
+                return this.userRepository;
             }
         }
 

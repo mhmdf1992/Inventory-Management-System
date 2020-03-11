@@ -4,6 +4,7 @@ using InventoryManagementSystem.Api.Models.Contact.Client;
 using InventoryManagementSystem.Api.Models.Contact.Supplier;
 using InventoryManagementSystem.Api.Models.Product;
 using InventoryManagementSystem.Api.Models.Product.Tangible;
+using InventoryManagementSystem.Api.Models.User;
 
 namespace InventoryManagementSystem.Api.Data
 {
@@ -95,6 +96,13 @@ namespace InventoryManagementSystem.Api.Data
                     new Client() {Id = 3, Name = "Bernardo Silva", Telephone = "961 3 822 106", Location = "Green fields - wall street 101 GF"}
                 };
                 seeds.ForEach(s => unitOfWork.ClientRepository.Insert(s));
+            }
+
+            if(! unitOfWork.UserRepository.Any()){
+                List<User> seeds = new List<User>(){
+                    new User() {Id = 1, Username = "mhmdfayad1992@gmail.com", Password="9613822106"}
+                };
+                seeds.ForEach(s => unitOfWork.UserRepository.Insert(s));
             }
             
             unitOfWork.Save();

@@ -6,6 +6,7 @@ using InventoryManagementSystem.Api.Models.Contact.Client;
 using InventoryManagementSystem.Api.Models.Contact.Supplier;
 using InventoryManagementSystem.Api.Models.Product;
 using InventoryManagementSystem.Api.Models.Product.Tangible;
+using InventoryManagementSystem.Api.Models.User;
 using InventoryManagementSystem.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -35,6 +36,7 @@ namespace InventoryManagementSystem.Api
                 .AddScoped<IRepository<Service>, EntityRepository<Service>>()
                 .AddScoped<IRepository<Supplier>, EntityRepository<Supplier>>()
                 .AddScoped<IRepository<Client>, EntityRepository<Client>>()
+                .AddScoped<IRepository<User>, EntityRepository<User>>()
                 .AddScoped<EntityService<Item>, ItemService>()
                 .AddScoped<EntityService<Service>, ServiceService>()
                 .AddScoped<EntityService<Supplier>, SupplierService>()
