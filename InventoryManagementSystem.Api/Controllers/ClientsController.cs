@@ -3,11 +3,13 @@ using AutoMapper;
 using InventoryManagementSystem.Api.DTOs;
 using InventoryManagementSystem.Api.Models.Contact.Client;
 using InventoryManagementSystem.Api.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 
 namespace InventoryManagementSystem.Api.Controllers
 {
+    [Authorize]
     [Route("api/v1/[controller]")]
     [ApiController]
     public class ClientsController : ControllerBase
@@ -32,13 +34,13 @@ namespace InventoryManagementSystem.Api.Controllers
         }
 
         [HttpGet("find")]
-        public ActionResult<IEnumerable<ClientDTO>> Find(
+        public ActionResult<IEnumerable<ClientDTO>> FindMatch(
             [FromQuery] ClientDTO client,
             [FromQuery] int skip = 0, [FromQuery] int take = 50){
             if(client == null)
                 return BadRequest();
                 
-            var clients = entityService.Find(mapper.Map<Client>(client), skip, take);
+            var clients = entityService.FindMatch(mapper.Map<Client>(client), skip, take);
 
             Response.Headers.Add("X-Pagination", 
                 JsonConvert.SerializeObject(new {total = clients.Total}));
