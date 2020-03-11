@@ -47,13 +47,13 @@ namespace InventoryManagementSystem.Test.ServicesTest
         }
 
         [Fact]
-        public void TestFind_ReturnPagedListOfSupplier_ListCountEqualsTake_TotalEqualsQueriedListCount(){
+        public void TestFindMatch_ReturnPagedListOfSupplier_ListCountEqualsTake_TotalEqualsQueriedListCount(){
             unitOfWork.Setup(
                 x => x.SupplierRepository.Get( It.IsAny<Expression<Func<Supplier, bool>>>(),
                  It.IsAny<Func<IQueryable<Supplier>, IOrderedQueryable<Supplier>>>(),
                  It.IsAny<string>())).Returns(list);
 
-            var result = supplierService.Find(list[0], 0, 1);
+            var result = supplierService.FindMatch(list[0], 0, 1);
 
             Assert.IsType<PagedList<Supplier>>(result);
             Assert.Equal(result.Count, 1);
