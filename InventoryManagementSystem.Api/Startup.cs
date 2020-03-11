@@ -1,3 +1,5 @@
+using System;
+using System.Text;
 using AutoMapper;
 using InventoryManagementSystem.Api.DAL.Repository;
 using InventoryManagementSystem.Api.DAL.UnitOfWork;
@@ -8,12 +10,15 @@ using InventoryManagementSystem.Api.Models.Product;
 using InventoryManagementSystem.Api.Models.Product.Tangible;
 using InventoryManagementSystem.Api.Models.User;
 using InventoryManagementSystem.Api.Services;
+using InventoryManagementSystem.Api.Services.Auth;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 
 namespace InventoryManagementSystem.Api
 {
@@ -37,19 +42,41 @@ namespace InventoryManagementSystem.Api
                 .AddScoped<IRepository<Supplier>, EntityRepository<Supplier>>()
                 .AddScoped<IRepository<Client>, EntityRepository<Client>>()
                 .AddScoped<IRepository<User>, EntityRepository<User>>()
+                .AddScoped<IUnitOfWork, EntitiesUnitOfWork>()
+                .AddScoped<ISeeder, EntitiesSeeder>()
                 .AddScoped<EntityService<Item>, ItemService>()
                 .AddScoped<EntityService<Service>, ServiceService>()
                 .AddScoped<EntityService<Supplier>, SupplierService>()
                 .AddScoped<EntityService<Client>, ClientService>()
-                .AddScoped<IUnitOfWork, EntitiesUnitOfWork>()
-                .AddScoped<ISeeder, EntitiesSeeder>()
+                .AddScoped<EntityService<User>, UserService>()
+                .AddScoped<IUserService>(x => new UserService(x.GetRequiredService<IUnitOfWork>()))
+                .AddScoped<IAuthService>(x => new JWTAuthService(
+                    x.GetRequiredService<IUserService>(),
+                    Configuration.GetValue<string>("TokenKey"),
+                    DateTime.UtcNow.AddHours(1)))
                 .AddCors(options =>{
                     options.AddDefaultPolicy(builder =>{
                         builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod()
-                                .WithExposedHeaders("X-Pagination");
-                        });
-                    })
-                .AddControllers().AddNewtonsoftJson();
+                            .WithExposedHeaders("X-Pagination");
+                    });
+                })
+                .AddAuthentication(x =>{
+                    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                    .AddJwtBearer(x =>{
+                        x.RequireHttpsMetadata = false;
+                        x.SaveToken = true;
+                        x.TokenValidationParameters = new TokenValidationParameters{   
+                            ValidateIssuerSigningKey = true,
+                            IssuerSigningKey = new SymmetricSecurityKey(
+                                Encoding.ASCII.GetBytes(Configuration.GetValue<string>("TokenKey"))),
+                            ValidateIssuer = false,
+                            ValidateAudience = false
+                            };
+                    });
+
+                services.AddControllers().AddNewtonsoftJson();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,7 +88,9 @@ namespace InventoryManagementSystem.Api
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod())
+            app.UseAuthentication()
+                .UseAuthorization()
+                .UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod())
                 .UseHttpsRedirection()
                 .UseRouting()
                 .UseCors()
