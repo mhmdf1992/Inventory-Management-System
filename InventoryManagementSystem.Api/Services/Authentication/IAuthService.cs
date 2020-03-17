@@ -4,6 +4,7 @@ namespace InventoryManagementSystem.Api.Services.Auth
 {
     public interface IAuthService
     {
-        string Authenticate(User user);
+        string Authenticate(IUserCredentials userCred);
+        string Register(User user);
     }
 }

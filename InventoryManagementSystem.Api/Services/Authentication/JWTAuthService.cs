@@ -18,17 +18,24 @@ namespace InventoryManagementSystem.Api.Services.Auth
             this.expires = expires;
         }
         
-        public string Authenticate(User user){
-            var result = userService.Find(user);
+        public string Authenticate(IUserCredentials userCred){
+            var result = this.userService.Authenticate(userCred);
             return result == null ? null : GenerateToken(result);
+        }
+        
+        public string Register(User user){
+            var result = this.userService.Register(user).Save();
+            return result == 0 ? null : GenerateToken(user);
         }
 
         public string GenerateToken(User user){
             var tokenHandler = new JwtSecurityTokenHandler();
             var tokenDescriptor = new SecurityTokenDescriptor{
                 Subject = new ClaimsIdentity(new Claim[]{
-                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.Username)
+                    new Claim("id", user.Id.ToString()),
+                    new Claim("email", user.Email),
+                    new Claim("fname", user.Firstname),
+                    new Claim("lname", user.Lastname)
                 }),
                 Expires = expires,
                 SigningCredentials = new SigningCredentials(

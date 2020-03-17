@@ -16,8 +16,8 @@ namespace InventoryManagementSystem.Api.Services
         public abstract EntityService<T> Insert(T entity);
         public abstract EntityService<T> Update(T entity, T val);
         public abstract EntityService<T> Delete(T entity);
-        public void Save(){
-            this.unitOfWork.Save();
+        public virtual int Save(){
+            return this.unitOfWork.Save();
         }
     }
 }

@@ -19,11 +19,24 @@ namespace InventoryManagementSystem.Api.Controllers
         }
 
         [HttpPost("Authenticate")]
-        public ActionResult<string> Authenticate([FromBody] UserDTO userDto){
+        public ActionResult<string> Authenticate([FromBody] UserCredentialsDTO userCredDto){
+            if(! ModelState.IsValid || userCredDto == null)
+                return BadRequest();
+            
+            var token = authService.Authenticate(mapper.Map<User>(userCredDto));
+
+            if(token == null)
+                return Unauthorized("Invalid username or password");
+
+            return Ok(token);
+        }
+
+        [HttpPost("Register")]
+        public ActionResult<string> Register([FromBody] UserDTO userDto){
             if(! ModelState.IsValid || userDto == null)
                 return BadRequest();
             
-            var token = authService.Authenticate(mapper.Map<User>(userDto));
+            var token = authService.Register(mapper.Map<User>(userDto));
 
             if(token == null)
                 return Unauthorized();

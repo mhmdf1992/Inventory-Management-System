@@ -13,7 +13,9 @@ namespace InventoryManagementSystem.Api.Data.Migrations
                     Id = table.Column<long>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     IsDeleted = table.Column<bool>(nullable: false),
-                    Username = table.Column<string>(nullable: true),
+                    Firstname = table.Column<string>(nullable: true),
+                    Lastname = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(nullable: true),
                     Password = table.Column<string>(nullable: true)
                 },
                 constraints: table =>

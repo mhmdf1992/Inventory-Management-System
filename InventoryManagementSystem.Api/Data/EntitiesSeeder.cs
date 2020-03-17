@@ -100,7 +100,9 @@ namespace InventoryManagementSystem.Api.Data
 
             if(! unitOfWork.UserRepository.Any()){
                 List<User> seeds = new List<User>(){
-                    new User() {Id = 1, Username = "mhmdfayad1992@gmail.com", Password="9613822106"}
+                    new User() {Id = 1, Firstname="Mhmd", Lastname="Fayad", Email = "mhmdfayad@gmail.com", Password="admin"},
+                    new User() {Id = 2, Firstname="Jackie", Lastname="Chan", Email = "jackie_chan@gmail.com", Password="102030"},
+                    new User() {Id = 3, Firstname="Thomas", Lastname="Party", Email = "thomasp1919@gmail.com", Password="405060"}
                 };
                 seeds.ForEach(s => unitOfWork.UserRepository.Insert(s));
             }

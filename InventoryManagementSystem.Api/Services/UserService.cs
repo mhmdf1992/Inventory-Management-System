@@ -22,16 +22,21 @@ namespace InventoryManagementSystem.Api.Services
         public PagedList<User> FindMatch(User match, int skip, int take){
             var users = unitOfWork.UserRepository
                 .Get(filter: i => !i.IsDeleted
-                    && i.Username.ToLower().Contains(match.Username.ToLower()));
+                    && i.Email.ToLower().Contains(match.Email.ToLower()));
             return new PagedList<User>(users.Skip(skip).Take(take))
                 .Set(list => list.Total = users.Count());
         }
 
-        public User Find(User user){
+        public User Authenticate(IUserCredentials userCred){
             return unitOfWork.UserRepository
                 .Get(filter: i => !i.IsDeleted
-                    && i.Username.Equals(user.Username)
-                    && i.Password.Equals(user.Password)).FirstOrDefault();
+                    && i.Email.ToLower().Equals(userCred.Email.ToLower())
+                    && i.Password.Equals(userCred.Password)).FirstOrDefault();
+        }
+
+        public EntityService<User> Register(User user){
+            this.Insert(user);
+            return this;
         }
 
         override
@@ -49,7 +54,8 @@ namespace InventoryManagementSystem.Api.Services
         public EntityService<User> Update(User user, User val){
             unitOfWork.UserRepository.Update(
                 user.Set(s => {
-                    s.Username = val.Username;
+                    s.Firstname = val.Firstname;
+                    s.Lastname = val.Lastname;
                     s.Password = val.Password;
                 }));
             return this;
