@@ -2,30 +2,123 @@
     padding-top: 5px;
   }
 
-  .navbar-link-logo{
-    text-decoration: none;
-    color: inherit;
-    padding: 5px 15px 5px 0px;
-  }
-  
-  .navbar-link{
-    text-decoration: none;
-    color: inherit;
-    opacity: 0.7;
-    padding: 5px 15px 5px 15px;
-    border-radius: 10px;
-  }
-  
-  .navbar-link:hover{
-    background-color: #e4e4e4;
-  }
-  
-  .navbar-link-active{
-    background-color: #f48024;
-    color: #ffffff;
-  }
-  
-  .navbar-link-active:hover{
-    background-color: #f48024;
-    color: #ffffff;
-  }
+.navbar-link-logo{
+  text-decoration: none;
+  color: inherit;
+  padding: 5px 15px 5px 0px;
+}
+
+.navbar-link{
+  text-decoration: none;
+  color: inherit;
+  opacity: 0.7;
+  padding: 5px 15px 5px 15px;
+  border-radius: 10px;
+}
+
+.navbar-link:hover{
+  background-color: #e4e4e4;
+}
+
+.navbar-link-active{
+  background-color: #f48024;
+  color: #ffffff;
+}
+
+.navbar-link-active:hover{
+  background-color: #f48024;
+  color: #ffffff;
+}
+
+.auth-panel{
+  float: right;
+}
+
+.auth-panel .login{
+  cursor: pointer;
+  border-radius: 2px;
+  box-shadow: 0 0 10px 0 #b39f9f;
+  background-color: #f48024;
+  color: #ffffff;
+  font-size: 14px; 
+  padding: 6px;
+  margin-right: 10px;
+}
+
+.auth-panel .register{
+  cursor: pointer;
+  border-radius: 2px;
+  box-shadow: 0 0 10px 0 #b39f9f;
+  background-color:#f48024;
+  color: #ffffff;
+  font-size: 14px; 
+  padding: 6px;
+}
+
+.login-btn:hover{
+  opacity: 0.7;
+}
+
+.register-btn:hover{
+  opacity: 0.7;
+}
+
+.user-profile{
+}
+
+.user-profile .user{
+  cursor: pointer;
+  border-radius: 50%;
+  border: #e2e2e2 2px solid;
+  box-shadow: 0 0 10px 0 #b39f9f;
+  font-weight: bolder;
+  background-color: #f48024;
+  color: #ffffff;
+  font-size: 14px; 
+  padding: 6px;
+}
+
+.user-profile .user:hover{
+  opacity: 0.7;
+}
+
+.user-profile .user:hover + .profile{
+  display: block;
+}
+
+.user-profile .profile{
+  display: none;
+  position: fixed; /* Stay in place */
+  z-index: 5050; /* Sit on top */
+  border-radius: 4px;
+  box-shadow: 0 0 10px 0 #4b4a4a;
+  background-color: #494949;
+  padding: 10px;
+  right: 20px;
+  top: 40px;
+  height: 70px;
+}
+
+.user-profile .profile:hover{
+  display: block;
+}
+
+.profile .email{
+  display: block;
+  color: #aaaaaa;
+}
+
+.profile .title{
+  color: #ffffff;
+  margin: 0;
+  padding: 0;
+}
+
+.user-profile .logout{
+  position: absolute;
+  bottom: 10px;
+  border-radius: 4px;
+  padding: 5px 10px 5px 10px;
+  cursor: pointer;
+  background-color: #ffffff;
+}

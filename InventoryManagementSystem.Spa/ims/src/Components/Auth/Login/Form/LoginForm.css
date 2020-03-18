@@ -1,0 +1,37 @@
+.login-form .row{
+    height: 30px;
+}
+
+.login-form .row-2{
+    height: 60px;
+}
+
+.login-form .form-input{
+    border: 0;
+    border-bottom: 1px #e4e4e4 solid;
+}
+
+.login-form .form-input.full-width{
+    width: 100%;
+}
+
+.login-form .footer{
+    height: 30px;
+}
+
+.login-form .login{
+    border-radius: 4px;
+    padding: 5px 10px 5px 10px;
+    float: right;
+    border: #e4e4e4 2px solid;
+    cursor: pointer;
+    float: right;
+}
+
+.login-form .login:hover{
+    opacity: 0.7;
+}
+
+.login-form .err-msg{
+    color: red;
+}

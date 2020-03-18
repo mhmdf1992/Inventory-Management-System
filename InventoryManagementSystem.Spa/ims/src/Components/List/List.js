@@ -73,7 +73,7 @@ const List = (ControlPanel, Modal, Item) =>{
                             show={this.state.editModal.show}
                             onClose={() => this.hideEditModal()}
                             data={this.state.editModal.item}
-                            onSave={(item) => {
+                            onAction={(item) => {
                                 if (item.id === 0)
                                     return this.service.insert(item, (id) => {
                                         this.handleChange();

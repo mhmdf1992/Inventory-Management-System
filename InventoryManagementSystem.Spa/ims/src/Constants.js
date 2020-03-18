@@ -4,7 +4,8 @@ const Constants = {
             Item: 'Items',
             Service: 'Services',
             Supplier: 'Suppliers',
-            Client: 'Clients'
+            Client: 'Clients',
+            Auth: 'Authentication'
         }
 }
 export default Constants;

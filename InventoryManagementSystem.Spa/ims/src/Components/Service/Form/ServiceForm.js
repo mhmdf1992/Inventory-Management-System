@@ -17,25 +17,27 @@ class ServiceForm extends Component{
     render(){
         return (
             <div className="service-form">
-                <div className="row">
-                    <input type="text" className="form-input" placeholder="Code"
-                        value={this.state.code} 
-                        onChange={(e) => this.setState({code: e.target.value})} />
-                </div>
-                <div className="row">
-                    <input type="text" className="form-input" placeholder="Price" 
-                        value={this.state.price} 
-                        onChange={(e) => this.setState({price: e.target.value})} />
-                </div>
-                <div className="row-2">
-                    <textarea type="text" className="form-input full-width" placeholder="Description"
-                        value={this.state.description} 
-                        onChange={(e) => this.setState({description: e.target.value})} />
-                </div>
-                <div className="footer">
-                    <button className="save" 
-                        onClick={() => this.props.onSave(this.state)}>save</button>
-                </div>
+                <form>
+                    <div className="row">
+                        <input type="text" className="form-input" placeholder="Code"
+                            value={this.state.code}
+                            onChange={(e) => this.setState({ code: e.target.value })} />
+                    </div>
+                    <div className="row">
+                        <input type="text" className="form-input" placeholder="Price"
+                            value={this.state.price}
+                            onChange={(e) => this.setState({ price: e.target.value })} />
+                    </div>
+                    <div className="row-2">
+                        <textarea type="text" className="form-input full-width" placeholder="Description"
+                            value={this.state.description}
+                            onChange={(e) => this.setState({ description: e.target.value })} />
+                    </div>
+                    <div className="footer">
+                        <button className="save"
+                            onClick={(e) => { e.preventDefault(); this.props.onAction(this.state) }}>save</button>
+                    </div>
+                </form>
             </div>
         )
     }

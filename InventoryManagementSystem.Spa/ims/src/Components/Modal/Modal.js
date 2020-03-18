@@ -10,7 +10,7 @@ const Modal = (Form) => (props) => {
                     <span className="close" onClick={() => props.onClose()}>&times;</span>
                 </div>
                 <div className="content-body">
-                    <Form data={props.data} onSave={props.onSave} />
+                    <Form data={props.data} onAction={props.onAction} errMsg={props.errMsg} />
                 </div>
             </div>
         </div>
