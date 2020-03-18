@@ -7,11 +7,11 @@ JWT authentication
 # Getting Started
 - dotnet core sdk 3.1, nodejs v 12
 - clone repository
-- cd /InventoryManagementSystem/Api && dotnet restore
-- dotnet run
-- cd /InventoryManagementSystem/Test && dotnet restore
-- dotnet test
-- cd /InventoryManagementSystem/Spa/ims && npm install
-- npm start
+- $cd /InventoryManagementSystem/Api && dotnet restore
+- $dotnet run
+- $cd /InventoryManagementSystem/Test && dotnet restore
+- $dotnet test
+- $cd /InventoryManagementSystem/Spa/ims && npm install
+- $npm start
 # Login User
 inside InventoryManagementSystem/Api/Data/EntitiesSeeder.cs
