@@ -1,5 +1,5 @@
 .login-form .row{
-    height: 30px;
+    min-height: 30px;
 }
 
 .login-form .row-2{
@@ -34,4 +34,5 @@
 
 .login-form .err-msg{
     color: red;
+    font-size: 11px;
 }
