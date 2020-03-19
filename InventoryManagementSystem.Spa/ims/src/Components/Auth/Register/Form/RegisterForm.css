@@ -1,5 +1,5 @@
 .register-form .row{
-    height: 30px;
+    min-height: 30px;
 }
 
 .register-form .row-2{
@@ -30,6 +30,7 @@
 
 .register-form .err-msg{
     color: red;
+    font-size: 11px;
 }
 
 .register-form .register:hover{
