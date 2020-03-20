@@ -42,7 +42,8 @@ class App extends Component {
               RegisterModal={RegisterModal}
               loginModel={UserModel.credentials}
               registerModel={UserModel.user}
-              routes={this.state.routes.map(route => (({ to, text, exact }) => ({ to, text, exact }))(route) )}/>
+              routes={this.state.routes.map(route => 
+                (({ to, text, exact }) => ({ to, text, exact }))(route) )}/>
           </div>
           <div className="page-container">
             {

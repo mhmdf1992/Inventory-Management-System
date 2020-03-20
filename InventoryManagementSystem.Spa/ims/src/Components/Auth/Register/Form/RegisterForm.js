@@ -2,8 +2,6 @@ import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import './RegisterForm.css';
-
 const RegisterForm = (props) => {
     return (
         <Formik
@@ -33,7 +31,7 @@ const RegisterForm = (props) => {
             }}
         >
             {formik => (
-                <div className="register-form">
+                <div className="form">
                     <form onSubmit={formik.handleSubmit}>
                         <div className="row">
                             <input id="firstname" className="form-input full-width" placeholder="Firstname"
@@ -71,7 +69,7 @@ const RegisterForm = (props) => {
                             ) : null}
                         </div>
                         <div className="footer">
-                            <button type="submit" className="register">Register</button>
+                            <button type="submit" className="submit">Register</button>
                         </div>
                     </form>
                 </div>

@@ -2,8 +2,6 @@ import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-import './LoginForm.css';
-
 const LoginForm = (props) => {
     return (
         <Formik
@@ -20,7 +18,7 @@ const LoginForm = (props) => {
             }}
         >
             {formik => (
-                <div className="login-form">
+                <div className="form">
                     <form onSubmit={formik.handleSubmit}>
                         <div className="row">
                             <input id="email" className="form-input full-width" placeholder="Email"
@@ -37,7 +35,7 @@ const LoginForm = (props) => {
                             ) : null}
                         </div>
                         <div className="footer">
-                            <button type="submit" className="login">Login</button>
+                            <button type="submit" className="submit">Login</button>
                         </div>
 
                     </form>

@@ -1,46 +1,60 @@
-import React, {Component} from 'react';
+import React from 'react';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
 
-import './ServiceForm.css';
-
-class ServiceForm extends Component{
-    constructor(props){
-        super(props);
-        this.state = this.props.data
-    }
-
-    componentDidUpdate(){
-        const service = this.props.data;
-        if(this.state.id !== service.id)
-            this.setState(service);
-    }
-
-    render(){
-        return (
-            <div className="service-form">
-                <form>
-                    <div className="row">
-                        <input type="text" className="form-input" placeholder="Code"
-                            value={this.state.code}
-                            onChange={(e) => this.setState({ code: e.target.value })} />
-                    </div>
-                    <div className="row">
-                        <input type="text" className="form-input" placeholder="Price"
-                            value={this.state.price}
-                            onChange={(e) => this.setState({ price: e.target.value })} />
-                    </div>
-                    <div className="row-2">
-                        <textarea type="text" className="form-input full-width" placeholder="Description"
-                            value={this.state.description}
-                            onChange={(e) => this.setState({ description: e.target.value })} />
-                    </div>
-                    <div className="footer">
-                        <button className="save"
-                            onClick={(e) => { e.preventDefault(); this.props.onAction(this.state) }}>save</button>
-                    </div>
-                </form>
-            </div>
-        )
-    }
-}
-
+const ServiceForm = (props) => {
+    return (
+        <Formik
+            enableReinitialize={true}
+            initialValues={{ ...props.data}}
+            validationSchema={Yup.object({
+                code: Yup.string()
+                    .required('Required')
+                    .min(3, 'Minimum 3 characters long')
+                    .max(50, 'Maximum 50 characters long'),
+                price: Yup.string()
+                    .required('Required')
+                    .matches(/^[1-9]\d*(\.\d+)?$/, 'Invalid price'),
+                description: Yup.string()
+                    .required('Required')
+                    .min(3, 'Minimum 3 characters long')
+                    .max(250, 'Maximum 250 characters long')
+            })}
+            onSubmit={(values, { setSubmitting }) => {
+                props.onAction(values);
+            }}
+        >
+            {formik => (
+                <div className="form">
+                    <form onSubmit={formik.handleSubmit}>
+                        <div className="row">
+                            <input id="code" className="form-input full-width" placeholder="Code"
+                                {...formik.getFieldProps('code')} />
+                            {formik.touched.code && formik.errors.code ? (
+                                <span className="err-msg">{formik.errors.code}</span>
+                            ) : null}
+                        </div>
+                        <div className="row">
+                            <input id="price" className="form-input full-width" placeholder="Price"
+                                {...formik.getFieldProps('price')} />
+                            {formik.touched.price && formik.errors.price ? (
+                                <span className="err-msg">{formik.errors.price}</span>
+                            ) : null}
+                        </div>
+                        <div className="row">
+                            <textarea id="description" className="form-input full-width" placeholder="Description"
+                                {...formik.getFieldProps('description')} />
+                            {formik.touched.description && formik.errors.description ? (
+                                <span className="err-msg">{formik.errors.description}</span>
+                            ) : null}
+                        </div>
+                        <div className="footer">
+                            <button type="submit" className="submit">Save</button>
+                        </div>
+                    </form>
+                </div>
+            )}
+        </Formik>
+    );
+};
 export default ServiceForm;

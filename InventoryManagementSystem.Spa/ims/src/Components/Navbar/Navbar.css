@@ -38,8 +38,6 @@
   cursor: pointer;
   border-radius: 2px;
   box-shadow: 0 0 10px 0 #b39f9f;
-  background-color: #f48024;
-  color: #ffffff;
   font-size: 14px; 
   padding: 6px;
   margin-right: 10px;
@@ -49,8 +47,6 @@
   cursor: pointer;
   border-radius: 2px;
   box-shadow: 0 0 10px 0 #b39f9f;
-  background-color:#f48024;
-  color: #ffffff;
   font-size: 14px; 
   padding: 6px;
 }
