@@ -35,9 +35,9 @@ namespace InventoryManagementSystem.Test.ControllersTest
                 new Supplier() {Id = 3, Name = "Bernardo Silva", Telephone = "961 3 822 106", Location = "Green fields - wall street 101 GF"}
             };
             dtoList = new List<SupplierDTO>(){
-                new SupplierDTO() {Id = 1, Name = "Marco Verati", Telephone = "961 3 822 106", Location = "Green fields - wall street 101 GF"},
-                new SupplierDTO() {Id = 2, Name = "Benjamin Stone", Telephone = "961 3 822 106", Location = "Green fields - wall street 101 GF"},
-                new SupplierDTO() {Id = 3, Name = "Bernardo Silva", Telephone = "961 3 822 106", Location = "Green fields - wall street 101 GF"}
+                new SupplierDTO() {id = 1, name = "Marco Verati", telephone = "961 3 822 106", location = "Green fields - wall street 101 GF"},
+                new SupplierDTO() {id = 2, name = "Benjamin Stone", telephone = "961 3 822 106", location = "Green fields - wall street 101 GF"},
+                new SupplierDTO() {id = 3, name = "Bernardo Silva", telephone = "961 3 822 106", location = "Green fields - wall street 101 GF"}
             };
             pagedList = new PagedList<Supplier>(list);
         }

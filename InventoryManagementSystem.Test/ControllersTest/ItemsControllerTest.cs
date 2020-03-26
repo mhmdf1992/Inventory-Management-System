@@ -35,9 +35,9 @@ namespace InventoryManagementSystem.Test.ControllersTest
                 new Item(){Id = 3, Description = "snips 100g", Code = "0003", Price = 1.5},
             };
             dtoList = new List<ItemDTO>(){
-                new ItemDTO(){Id = 1, Description = "snips 25g", Code = "0001", Price = 0.5},
-                new ItemDTO(){Id = 2, Description = "snips 50g", Code = "0002", Price = 1},
-                new ItemDTO(){Id = 3, Description = "snips 100g", Code = "0003", Price = 1.5},
+                new ItemDTO(){id = 1, description = "snips 25g", code = "0001", price = 0.5},
+                new ItemDTO(){id = 2, description = "snips 50g", code = "0002", price = 1},
+                new ItemDTO(){id = 3, description = "snips 100g", code = "0003", price = 1.5},
             };
             pagedList = new PagedList<Item>(list);
         }

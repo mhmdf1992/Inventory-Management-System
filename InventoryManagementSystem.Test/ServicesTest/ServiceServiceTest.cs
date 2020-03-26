@@ -14,11 +14,13 @@ namespace InventoryManagementSystem.Test.ServicesTest
     public class ServiceServiceTest
     {
         Mock<IUnitOfWork> unitOfWork;
-        EntityService<Service> serviceService;
+        EntityService<Service> entityService;
+        IProductService<Service> serviceService;
         List<Service> list;
         PagedList<Service> pagedList;
         public ServiceServiceTest(){
             unitOfWork = new Mock<IUnitOfWork>();
+            entityService = new ServiceService(unitOfWork.Object);
             serviceService = new ServiceService(unitOfWork.Object);
             list = new List<Service>(){
                 new Service(){Id = 1, Description = "extract container", Code = "s0001", Price = 100},
@@ -39,7 +41,7 @@ namespace InventoryManagementSystem.Test.ServicesTest
                  It.IsAny<Func<IQueryable<Service>, IOrderedQueryable<Service>>>(),
                  It.IsAny<string>())).Returns(list);
 
-            var result = serviceService.Get(skip, take);
+            var result = entityService.Get(skip, take);
 
             Assert.IsType<PagedList<Service>>(result);
             Assert.Equal(result.Count, take);
@@ -53,7 +55,7 @@ namespace InventoryManagementSystem.Test.ServicesTest
                  It.IsAny<Func<IQueryable<Service>, IOrderedQueryable<Service>>>(),
                  It.IsAny<string>())).Returns(list);
 
-            var result = serviceService.FindMatch(list[0], 0, 1);
+            var result = entityService.FindMatch(list[0], 0, 1);
 
             Assert.IsType<PagedList<Service>>(result);
             Assert.Equal(result.Count, 1);
@@ -64,7 +66,7 @@ namespace InventoryManagementSystem.Test.ServicesTest
         public void TestGet_ReturnService(){
             unitOfWork.Setup(x => x.ServiceRepository.Get(It.IsAny<long>())).Returns(list[0]);
             
-            var result = serviceService.Get(1);
+            var result = entityService.Get(1);
 
             Assert.IsType<Service>(result);
         }
@@ -73,7 +75,7 @@ namespace InventoryManagementSystem.Test.ServicesTest
         public void TestInsert_ReturnServiceService(){
             unitOfWork.Setup(x => x.ServiceRepository.Insert(It.IsAny<Service>())).Returns(true);
 
-            var result = serviceService.Insert(list[0]);
+            var result = entityService.Insert(list[0]);
 
             Assert.IsType<ServiceService>(result);
         }
@@ -82,7 +84,7 @@ namespace InventoryManagementSystem.Test.ServicesTest
         public void TestUpdate_ReturnServiceService(){
             unitOfWork.Setup(x => x.ServiceRepository.Update(It.IsAny<Service>())).Returns(true);
 
-            var result = serviceService.Update(list[0], list[1]);
+            var result = entityService.Update(list[0], list[1]);
 
             Assert.IsType<ServiceService>(result);
         }
@@ -90,9 +92,57 @@ namespace InventoryManagementSystem.Test.ServicesTest
         [Fact] void TestDelete_ReturnServiceService(){
             unitOfWork.Setup(x => x.ServiceRepository.Delete(It.IsAny<Service>())).Returns(true);
 
-            var result = serviceService.Delete(list[0]);
+            var result = entityService.Delete(list[0]);
 
             Assert.IsType<ServiceService>(result);
+        }
+
+        [Fact]
+        public void TestGet_ReturnServiceIfCodeExist(){
+            unitOfWork.Setup(
+                x => x.ServiceRepository.Get( It.IsAny<Expression<Func<Service, bool>>>(),
+                 It.IsAny<Func<IQueryable<Service>, IOrderedQueryable<Service>>>(),
+                 It.IsAny<string>())).Returns(list);
+
+            var result = serviceService.Get(list[0].Code);
+
+            Assert.IsType<Service>(result);
+        }
+
+        [Fact]
+        public void TestGet_ReturnNullIfCodeNotExist(){
+            unitOfWork.Setup(
+                x => x.ServiceRepository.Get( It.IsAny<Expression<Func<Service, bool>>>(),
+                 It.IsAny<Func<IQueryable<Service>, IOrderedQueryable<Service>>>(),
+                 It.IsAny<string>())).Returns(new List<Service>());
+
+            var result = serviceService.Get(list[0].Code);
+
+            Assert.Null(result);
+        }
+
+        [Fact]
+        public void TestExist_ReturnTrueIfCodeExist(){
+            unitOfWork.Setup(
+                x => x.ServiceRepository.Get( It.IsAny<Expression<Func<Service, bool>>>(),
+                 It.IsAny<Func<IQueryable<Service>, IOrderedQueryable<Service>>>(),
+                 It.IsAny<string>())).Returns(list);
+
+            var result = serviceService.Exist(list[0].Code);
+
+            Assert.True(result);
+        }
+
+        [Fact]
+        public void TestExist_ReturnFalseIfCodeNotExist(){
+            unitOfWork.Setup(
+                x => x.ServiceRepository.Get( It.IsAny<Expression<Func<Service, bool>>>(),
+                 It.IsAny<Func<IQueryable<Service>, IOrderedQueryable<Service>>>(),
+                 It.IsAny<string>())).Returns(new List<Service>());
+
+            var result = serviceService.Exist(list[0].Code);
+
+            Assert.False(result);
         }
     }
 }

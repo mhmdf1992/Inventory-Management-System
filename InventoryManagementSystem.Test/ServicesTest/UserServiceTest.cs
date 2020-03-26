@@ -65,6 +65,41 @@ namespace InventoryManagementSystem.Test.ServicesTest
         }
 
         [Fact]
+        public void TestGet_ReturnUser(){
+            unitOfWork.Setup(x => x.UserRepository.Get(It.IsAny<long>())).Returns(list[0]);
+            
+            var result = entityService.Get(1);
+
+            Assert.IsType<User>(result);
+        }
+
+        [Fact]
+        public void TestInsert_ReturnUserService(){
+            unitOfWork.Setup(x => x.UserRepository.Insert(It.IsAny<User>())).Returns(true);
+
+            var result = entityService.Insert(list[0]);
+
+            Assert.IsType<UserService>(result);
+        }
+
+        [Fact]
+        public void TestUpdate_ReturnUserService(){
+            unitOfWork.Setup(x => x.UserRepository.Update(It.IsAny<User>())).Returns(true);
+
+            var result = entityService.Update(list[0], list[1]);
+
+            Assert.IsType<UserService>(result);
+        }
+
+        [Fact] void TestDelete_ReturnUserService(){
+            unitOfWork.Setup(x => x.UserRepository.Delete(It.IsAny<User>())).Returns(true);
+
+            var result = entityService.Delete(list[0]);
+
+            Assert.IsType<UserService>(result);
+        }
+
+        [Fact]
         public void TestRegister_ReturnUserService(){
             unitOfWork.Setup(x => x.UserRepository.Insert(It.IsAny<User>())).Returns(true);
             
@@ -98,38 +133,51 @@ namespace InventoryManagementSystem.Test.ServicesTest
         }
 
         [Fact]
-        public void TestGet_ReturnUser(){
-            unitOfWork.Setup(x => x.UserRepository.Get(It.IsAny<long>())).Returns(list[0]);
-            
-            var result = entityService.Get(1);
+        public void TestGet_ReturnUserIfEmailExist(){
+            unitOfWork.Setup(
+                x => x.UserRepository.Get( It.IsAny<Expression<Func<User, bool>>>(),
+                 It.IsAny<Func<IQueryable<User>, IOrderedQueryable<User>>>(),
+                 It.IsAny<string>())).Returns(list);
+
+            var result = userService.Get(userCredentials.Email);
 
             Assert.IsType<User>(result);
         }
 
         [Fact]
-        public void TestInsert_ReturnUserService(){
-            unitOfWork.Setup(x => x.UserRepository.Insert(It.IsAny<User>())).Returns(true);
+        public void TestGet_ReturnNullIfEmailNotExist(){
+            unitOfWork.Setup(
+                x => x.UserRepository.Get( It.IsAny<Expression<Func<User, bool>>>(),
+                 It.IsAny<Func<IQueryable<User>, IOrderedQueryable<User>>>(),
+                 It.IsAny<string>())).Returns(new List<User>());
 
-            var result = entityService.Insert(list[0]);
+            var result = userService.Get(userCredentials.Email);
 
-            Assert.IsType<UserService>(result);
+            Assert.Null(result);
         }
 
         [Fact]
-        public void TestUpdate_ReturnUserService(){
-            unitOfWork.Setup(x => x.UserRepository.Update(It.IsAny<User>())).Returns(true);
+        public void TestExist_ReturnTrueIfEmailExist(){
+            unitOfWork.Setup(
+                x => x.UserRepository.Get( It.IsAny<Expression<Func<User, bool>>>(),
+                 It.IsAny<Func<IQueryable<User>, IOrderedQueryable<User>>>(),
+                 It.IsAny<string>())).Returns(list);
 
-            var result = entityService.Update(list[0], list[1]);
+            var result = userService.Exist(userCredentials.Email);
 
-            Assert.IsType<UserService>(result);
+            Assert.True(result);
         }
 
-        [Fact] void TestDelete_ReturnUserService(){
-            unitOfWork.Setup(x => x.UserRepository.Delete(It.IsAny<User>())).Returns(true);
+        [Fact]
+        public void TestExist_ReturnFalseIfEmailNotExist(){
+            unitOfWork.Setup(
+                x => x.UserRepository.Get( It.IsAny<Expression<Func<User, bool>>>(),
+                 It.IsAny<Func<IQueryable<User>, IOrderedQueryable<User>>>(),
+                 It.IsAny<string>())).Returns(new List<User>());
 
-            var result = entityService.Delete(list[0]);
+            var result = userService.Exist(userCredentials.Email);
 
-            Assert.IsType<UserService>(result);
+            Assert.False(result);
         }
     }
 }

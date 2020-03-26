@@ -35,9 +35,9 @@ namespace InventoryManagementSystem.Test.ControllersTest
                 new Service(){Id = 3, Description = "business consultancy", Code = "s0003", Price = 1.5},
             };
             dtoList = new List<ServiceDTO>(){
-                new ServiceDTO(){Id = 1, Description = "extract container", Code = "s0001", Price = 100},
-                new ServiceDTO(){Id = 2, Description = "install house furniture", Code = "s0002", Price = 150},
-                new ServiceDTO(){Id = 3, Description = "business consultancy", Code = "s0003", Price = 1.5},
+                new ServiceDTO(){id = 1, description = "extract container", code = "s0001", price = 100},
+                new ServiceDTO(){id = 2, description = "install house furniture", code = "s0002", price = 150},
+                new ServiceDTO(){id = 3, description = "business consultancy", code = "s0003", price = 1.5},
             };
             pagedList = new PagedList<Service>(list);
         }

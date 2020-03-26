@@ -39,7 +39,7 @@ namespace InventoryManagementSystem.Test.ControllersTest
 
             var actionResult = controller.Authenticate(new UserCredentialsDTO());
 
-            Assert.IsType<UnauthorizedObjectResult>(actionResult.Result);
+            Assert.IsType<UnauthorizedResult>(actionResult.Result);
         }
 
         [Fact]
