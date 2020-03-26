@@ -1,8 +1,13 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace InventoryManagementSystem.Api.DTOs
 {
     public class UserCredentialsDTO
     {
-        public string Email {get; set;}
-        public string Password {get; set;}
+        [Required(ErrorMessage = "Required")]
+        [EmailAddress(ErrorMessage = "Email address is invalid")]
+        public string email {get; set;}
+        [Required(ErrorMessage = "Required")]
+        public string password {get; set;}
     }
 }

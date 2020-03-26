@@ -6,7 +6,7 @@ using InventoryManagementSystem.Api.Models.Product;
 
 namespace InventoryManagementSystem.Api.Services
 {
-    public class ServiceService : EntityService<Service>
+    public class ServiceService : EntityService<Service>, IProductService<Service>
     {
         public ServiceService(IUnitOfWork unitOfWork) : base(unitOfWork){}
 
@@ -54,6 +54,15 @@ namespace InventoryManagementSystem.Api.Services
         public EntityService<Service> Delete(Service service){
             unitOfWork.ServiceRepository.Delete(service);
             return this;
+        }
+
+        public bool Exist(string code)
+        {
+            return Get(code) != null;
+        }
+
+        public Service Get(string code){
+            return unitOfWork.ServiceRepository.Get(filter: i => i.Code.Equals(code)).FirstOrDefault();
         }
     }
 }

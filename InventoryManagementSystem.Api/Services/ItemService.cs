@@ -3,10 +3,11 @@ using InventoryManagementSystem.Api.DAL.UnitOfWork;
 using InventoryManagementSystem.Api.Helpers;
 using InventoryManagementSystem.Api.Extensions;
 using InventoryManagementSystem.Api.Models.Product.Tangible;
+using InventoryManagementSystem.Api.Models.Product;
 
 namespace InventoryManagementSystem.Api.Services
 {
-    public class ItemService : EntityService<Item>
+    public class ItemService : EntityService<Item>, IProductService<Item>
     {
         public ItemService(IUnitOfWork unitOfWork) : base(unitOfWork){}
 
@@ -55,6 +56,14 @@ namespace InventoryManagementSystem.Api.Services
         public EntityService<Item> Delete(Item item){
             unitOfWork.ItemRepository.Delete(item);
             return this;
+        }
+
+        public bool Exist(string code){
+            return Get(code) != null;
+        }
+
+        public Item Get(string code){
+            return unitOfWork.ItemRepository.Get(filter: i => i.Code.Equals(code)).FirstOrDefault();
         }
     }
 }

@@ -66,5 +66,14 @@ namespace InventoryManagementSystem.Api.Services
             unitOfWork.UserRepository.Delete(user);
             return this;
         }
+
+        public bool Exist(string email){
+            return Get(email) != null;
+        }
+
+        public User Get(string email){
+            return unitOfWork.UserRepository
+                .Get(filter: i => i.Email.Equals(email)).FirstOrDefault();
+        }
     }
 }

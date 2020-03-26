@@ -8,16 +8,16 @@ namespace InventoryManagementSystem.Api.AutoMapperProfiles
     {
         public ServiceProfile(){
             CreateMap<Service, ServiceDTO>()
-                .BeforeMap((src, dst) => dst.Id = src.Id)
-                .BeforeMap((src, dst) => dst.Description = src.Description)
-                .BeforeMap((src, dst) => dst.Code = src.Code)
-                .BeforeMap((src, dst) => dst.Price = src.Price);
+                .BeforeMap((src, dst) => dst.id = src.Id)
+                .BeforeMap((src, dst) => dst.description = src.Description)
+                .BeforeMap((src, dst) => dst.code = src.Code)
+                .BeforeMap((src, dst) => dst.price = src.Price);
                 
             CreateMap<ServiceDTO, Service>()
-                .BeforeMap((src, dst) => dst.Id = src.Id)
-                .BeforeMap((src, dst) => dst.Description = src.Description)
-                .BeforeMap((src, dst) => dst.Code = src.Code)
-                .BeforeMap((src, dst) => dst.Price = src.Price);
+                .BeforeMap((src, dst) => dst.Id = src.id)
+                .BeforeMap((src, dst) => dst.Description = src.description)
+                .BeforeMap((src, dst) => dst.Code = src.code)
+                .BeforeMap((src, dst) => dst.Price = src.price);
         }
     }
 }

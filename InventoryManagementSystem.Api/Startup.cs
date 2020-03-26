@@ -54,6 +54,8 @@ namespace InventoryManagementSystem.Api
                     x.GetRequiredService<IUserService>(),
                     Configuration.GetValue<string>("TokenKey"),
                     DateTime.UtcNow.AddHours(1)))
+                .AddScoped<IProductService<Item>>(x => new ItemService(x.GetRequiredService<IUnitOfWork>()))
+                .AddScoped<IProductService<Service>>(x => new ServiceService(x.GetRequiredService<IUnitOfWork>()))
                 .AddCors(options =>{
                     options.AddDefaultPolicy(builder =>{
                         builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod()
