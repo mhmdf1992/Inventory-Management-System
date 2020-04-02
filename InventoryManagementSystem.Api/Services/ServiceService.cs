@@ -29,6 +29,16 @@ namespace InventoryManagementSystem.Api.Services
         }
 
         override
+        public PagedList<Service> FindMatch(string match, int skip, int take){
+            var services = unitOfWork.ServiceRepository
+                .Get(filter: i => !i.IsDeleted
+                    && (i.Code.ToLower().Contains(match.ToLower())
+                        || i.Description.ToLower().Contains(match.ToLower())));
+            return new PagedList<Service>(services.Skip(skip).Take(take))
+                .Set(list => list.Total = services.Count());
+        }
+
+        override
         public Service Get(long id){
             return unitOfWork.ServiceRepository.Get(id);
         }

@@ -12,6 +12,7 @@ namespace InventoryManagementSystem.Api.Services
         }
         public abstract PagedList<T> Get(int skip, int take);
         public abstract PagedList<T> FindMatch(T match, int skip, int take);
+        public abstract PagedList<T> FindMatch(string match, int skip, int take);
         public abstract T Get(long id);
         public abstract EntityService<T> Insert(T entity);
         public abstract EntityService<T> Update(T entity, T val);

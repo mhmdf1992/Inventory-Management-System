@@ -26,7 +26,7 @@ namespace InventoryManagementSystem.Api.Controllers
             var token = authService.Authenticate(mapper.Map<User>(userCredDto));
 
             if(token == null)
-                return Unauthorized();
+                return Unauthorized("Invalid username or password");
 
             return Ok(token);
         }

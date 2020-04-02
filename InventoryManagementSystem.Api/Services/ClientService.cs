@@ -30,6 +30,18 @@ namespace InventoryManagementSystem.Api.Services
         }
 
         override
+        public PagedList<Client> FindMatch(string match, int skip, int take){
+            var clients = unitOfWork.ClientRepository
+                .Get(filter: i => !i.IsDeleted
+                    && (i.Name.ToLower().Contains(match.ToLower())
+                        || i.Location.ToLower().Contains(match.ToLower())
+                        || i.Email.ToLower().Contains(match.ToLower())
+                        || i.Telephone.ToLower().Contains(match.ToLower())));
+            return new PagedList<Client>(clients.Skip(skip).Take(take))
+                .Set(list => list.Total = clients.Count());
+        }
+
+        override
         public Client Get(long id){
             return unitOfWork.ClientRepository.Get(id);
         }

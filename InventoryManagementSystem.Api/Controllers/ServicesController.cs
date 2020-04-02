@@ -35,11 +35,11 @@ namespace InventoryManagementSystem.Api.Controllers
 
         [HttpGet("find")]
         public ActionResult<IEnumerable<ServiceDTO>> FindMatch(
-            [FromQuery] ServiceDTO service,
+            [FromQuery] string txt,
             [FromQuery] int skip = 0, [FromQuery] int take = 50){
-            if(service == null)
+            if(string.IsNullOrEmpty(txt))
                 return BadRequest();
-            var services = entityService.FindMatch(mapper.Map<Service>(service), skip, take);
+            var services = entityService.FindMatch(txt, skip, take);
 
             Response.Headers.Add("X-Pagination", 
                 JsonConvert.SerializeObject(new {total = services.Total}));

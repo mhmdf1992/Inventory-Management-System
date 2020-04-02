@@ -27,6 +27,15 @@ namespace InventoryManagementSystem.Api.Services
                 .Set(list => list.Total = users.Count());
         }
 
+        override
+        public PagedList<User> FindMatch(string match, int skip, int take){
+            var users = unitOfWork.UserRepository
+                .Get(filter: i => !i.IsDeleted
+                    && i.Email.ToLower().Contains(match.ToLower()));
+            return new PagedList<User>(users.Skip(skip).Take(take))
+                .Set(list => list.Total = users.Count());
+        }
+
         public User Authenticate(IUserCredentials userCred){
             return unitOfWork.UserRepository
                 .Get(filter: i => !i.IsDeleted

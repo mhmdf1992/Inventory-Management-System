@@ -29,6 +29,18 @@ namespace InventoryManagementSystem.Api.Services
         }
 
         override
+        public PagedList<Supplier> FindMatch(string match, int skip, int take){
+            var suppliers = unitOfWork.SupplierRepository
+                .Get(filter: i => !i.IsDeleted
+                    && (i.Name.ToLower().Contains(match.ToLower())
+                        || i.Location.ToLower().Contains(match.ToLower())
+                        || i.Email.ToLower().Contains(match.ToLower())
+                        || i.Telephone.ToLower().Contains(match.ToLower())));
+            return new PagedList<Supplier>(suppliers.Skip(skip).Take(take))
+                .Set(list => list.Total = suppliers.Count());
+        }
+
+        override
         public Supplier Get(long id){
             return unitOfWork.SupplierRepository.Get(id);
         }
