@@ -1,0 +1,15 @@
+.page{
+    height: 100%;
+}
+
+.page-header{
+    height: 30px;
+}
+
+.page-body{
+    padding: 20px 0 20px 0;
+}
+
+.page-footer{
+    height: 30px;
+}

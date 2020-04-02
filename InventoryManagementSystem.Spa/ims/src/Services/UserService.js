@@ -1,17 +1,18 @@
 import axios from 'axios';
-import Constants from '../Constants';
+import ApiService from './ApiService';
 
-const UserService = {
-    login(userCred, callback, errCallback){
-        axios.post(`${Constants.ApiUrl}/${Constants.Endpoints.Auth}/Authenticate`, userCred)
+class UserService extends ApiService {
+
+    login = (userCred, callback, callbackError) =>{
+        axios.post(`${this.url}/${this.endpoint}/Authenticate`, userCred)
             .then(res => callback(res.data))
-            .catch(err => errCallback(err.response.data))
-    },
-    register(user, callback, errCallback){
-        axios.post(`${Constants.ApiUrl}/${Constants.Endpoints.Auth}/Register`, user)
-            .then(res => callback(res.data))
-            .catch(err => errCallback(err))
+            .catch(err => callbackError(err.response.data));
     }
-}
 
+    register = (user, callback, callbackError) =>{
+        axios.post(`${this.url}/${this.endpoint}/Register`, user)
+            .then(res => callback(res.data))
+            .catch(err => callbackError(err.response.data));
+    }   
+}
 export default UserService;

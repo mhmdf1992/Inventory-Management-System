@@ -1,16 +1,16 @@
 import React from 'react';
 
 import './Modal.css';
-const Modal = (Form) => (props) => {
+const Modal = (Form) => ({show, title, onClose, value, onSubmit, service}) => {
     return(
-        <div className={`modal ${props.show ? "" : "hidden"}`}>
+        <div className={`modal ${show ? "" : "hidden"}`}>
             <div className="modal-content">
                 <div className="content-header">
-                    <h4 className="modal-title">{props.title}</h4>
-                    <span className="close" onClick={() => props.onClose()}>&times;</span>
+                    <h4 className="modal-title">{title}</h4>
+                    <span className="close" onClick={() => onClose()}>&times;</span>
                 </div>
                 <div className="content-body">
-                    <Form data={props.data} onAction={props.onAction} errMsg={props.errMsg} />
+                    <Form value={value} onSubmit={onSubmit} service={service}/>
                 </div>
             </div>
         </div>

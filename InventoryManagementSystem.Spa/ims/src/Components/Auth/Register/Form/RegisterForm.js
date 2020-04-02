@@ -2,32 +2,34 @@ import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-const RegisterForm = (props) => {
+const RegisterForm = ({value, onSubmit, service}) => {
     return (
         <Formik
-            initialValues={{ ...props.data, confirm: '' }}
+            initialValues={{ ...value, confirm: '' }}
             validationSchema={Yup.object({
                 firstname: Yup.string()
                     .required('Required')
-                    .min(3, 'Minimum 3 characters long')
-                    .max(25, 'Maximum 25 characters long'),
+                    .min(3, 'Firstname is too short')
+                    .max(25, 'Firstname is too long'),
                 lastname: Yup.string()
                     .required('Required')
-                    .min(3, 'Minimum 3 characters long')
-                    .max(25, 'Maximum 25 characters long'),
+                    .min(3, 'Lastname is too short')
+                    .max(25, 'Lastname is too long'),
                 email: Yup.string()
-                    .email('Invalid email address')
+                    .email('Email address is invalid')
                     .required('Required'),
                 password: Yup.string()
                     .required('Required')
-                    .min(6)
-                    .max(25, 'Maximum 25 characters long'),
+                    .min(6, 'Password is too short')
+                    .max(25, 'Password is too long'),
                 confirm: Yup.string()
                     .required('Required')
                     .oneOf([Yup.ref("password")], "Password missmatch")
             })}
-            onSubmit={(values, { setSubmitting }) => {
-                props.onAction(values);
+            onSubmit={(values, { setErrors }) => {
+                service.register(values, 
+                    token => onSubmit(token),
+                    err => setErrors(err.errors));
             }}
         >
             {formik => (

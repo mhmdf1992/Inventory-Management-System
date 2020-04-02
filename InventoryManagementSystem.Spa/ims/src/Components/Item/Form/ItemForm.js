@@ -4,26 +4,31 @@ import * as Yup from 'yup';
 import Helpers from '../../../Helpers';
 import './ItemForm.css';
 
-const ItemForm = (props) => {
+const ItemForm = ({value, onSubmit, service}) => {
     return (
         <Formik
             enableReinitialize={true}
-            initialValues={{ ...props.data}}
+            initialValues={{...value}}
             validationSchema={Yup.object({
                 code: Yup.string()
                     .required('Required')
-                    .min(3, 'Minimum 3 characters long')
-                    .max(50, 'Maximum 50 characters long'),
+                    .min(3, 'Code is too short')
+                    .max(25, 'Code is too long'),
                 price: Yup.string()
                     .required('Required')
-                    .matches(/^[1-9]\d*(\.\d+)?$/, 'Invalid price'),
+                    .matches(/^[1-9]\d*(\.\d+)?$/, 'Price is invalid'),
                 description: Yup.string()
                     .required('Required')
-                    .min(3, 'Minimum 3 characters long')
-                    .max(250, 'Maximum 250 characters long')
+                    .min(3, 'Description is too short')
+                    .max(250, 'Description is too long'),
+                imageBase64: Yup.string()
+                    .required('Required')
+                    .matches('^data:image/([a-zA-Z]*);base64,(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$', 'Image is invalid')
             })}
-            onSubmit={(values, { setSubmitting }) => {
-                props.onAction(values);
+            onSubmit={(values, { setErrors }) => {
+                value.id === 0 
+                    ? service.insert(values, res => onSubmit(), err => setErrors(err.errors))
+                    : service.update(values, res => onSubmit(), err => setErrors(err.errors))
             }}
         >
             {formik => (
@@ -37,6 +42,9 @@ const ItemForm = (props) => {
                                     Helpers.getBase64(e.target.files[0],
                                         (res) => formik.setFieldValue("imageBase64", res))
                                 }} />
+                            {formik.touched.imageBase64 && formik.errors.imageBase64 ? (
+                                <span className="err-msg">{formik.errors.imageBase64}</span>
+                            ) : null}
                         </div>
                         <div className="row">
                             <input id="code" className="form-input full-width" placeholder="Code"

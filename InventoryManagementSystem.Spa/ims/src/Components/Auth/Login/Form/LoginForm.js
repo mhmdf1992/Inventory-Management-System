@@ -2,19 +2,21 @@ import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-const LoginForm = (props) => {
+const LoginForm = ({value, onSubmit, service}) => {
     return (
         <Formik
-            initialValues={{ ...props.data }}
+            initialValues={{ ...value }}
             validationSchema={Yup.object({
                 email: Yup.string()
-                    .email('Invalid email address')
-                    .required('Required'),
+                    .required('Required')
+                    .email('Email is invalid'),
                 password: Yup.string()
                     .required('Required')
             })}
-            onSubmit={(values, { setSubmitting }) => {
-                props.onAction(values);
+            onSubmit={(values, { setErrors }) => {
+                service.login(values, 
+                    token => onSubmit(token), 
+                    err => setErrors({password: err}));
             }}
         >
             {formik => (

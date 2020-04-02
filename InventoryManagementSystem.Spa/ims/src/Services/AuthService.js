@@ -5,7 +5,7 @@ const AuthService = {
     getPayload(){
         return this.getAccessToken() ? JSON.parse(atob(this.getAccessToken().split('.')[1])) : null;
     },
-    setAccessToken(token, callback){
+    setAccessToken(token){
         localStorage.setItem('access_token', token);
     },
     getAccessToken(){

@@ -1,18 +1,14 @@
 import React from 'react';
 
 import './Item.css';
-const Item = (props) => {
+const Item = ({value, onEdit, onDelete}) => {
     return(
-        <div className="item"
-            onClick={(e) => {props.onEdit(props.item.id)}}>
-                <h4>{props.item.code}</h4>
-                <span>${props.item.price}</span>
-                <img alt={props.item.description} className="item-image" src={props.item.imageBase64}></img>
-                <span>{props.item.description}</span>
-                <span 
-                    onClick={(e) => {
-                        if (window.confirm('are you sure?'))
-                            props.onDelete(props.item)}}>x</span>
+        <div className="item" onClick={e => onEdit(value.id)}>
+                <h4>{value.code}</h4>
+                <span>${value.price}</span>
+                <img alt={value.description} className="item-image" src={value.imageBase64}></img>
+                <span>{value.description}</span>
+                <span onClick={e => window.confirm('are you sure?') ? onDelete(value) : ''}>x</span>
         </div>
     )
 }

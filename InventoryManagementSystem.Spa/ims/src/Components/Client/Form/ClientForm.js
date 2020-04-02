@@ -2,29 +2,31 @@ import React from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 
-const ClientForm = (props) => {
+const ClientForm = ({value, onSubmit, service}) => {
     return (
         <Formik
             enableReinitialize={true}
-            initialValues={{ ...props.data}}
+            initialValues={{ ...value}}
             validationSchema={Yup.object({
                 name: Yup.string()
                     .required('Required')
-                    .min(3, 'Minimum 3 characters long')
-                    .max(50, 'Maximum 50 characters long'),
+                    .min(3, 'Name is too short')
+                    .max(50, 'Name is too long'),
                 email: Yup.string()
-                    .email('Invalid email address')
-                    .required('Required'),
+                    .required('Required')
+                    .email('Email address is invalid'),
                 telephone: Yup.string()
                     .required('Required')
-                    .matches(/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/, "Invalid telephone number"),
+                    .matches(/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/, "Telephone is invalid"),
                 location: Yup.string()
                     .required('Required')
-                    .min(3, 'Minimum 3 characters long')
-                    .max(250, 'Maximum 250 characters long')
+                    .min(3, 'Location is too short')
+                    .max(250, 'Location is too long')
             })}
-            onSubmit={(values, { setSubmitting }) => {
-                props.onAction(values);
+            onSubmit={(values, { setErrors }) => {
+                value.id === 0 
+                    ? service.insert(values, res => onSubmit(), err => setErrors(err.errors))
+                    : service.update(values, res => onSubmit(), err => setErrors(err.errors))
             }}
         >
             {formik => (
