@@ -61,21 +61,21 @@ namespace InventoryManagementSystem.Test.ControllersTest
 
         [Fact]
         public void TestFindMatch_ReturnBadRequestIfServiceIsNull(){
-            var actionResult = controller.FindMatch(service: null, It.IsAny<int>(), It.IsAny<int>());
+            var actionResult = controller.FindMatch(txt: null, It.IsAny<int>(), It.IsAny<int>());
 
             Assert.IsType<BadRequestResult>(actionResult.Result);
         }
 
         [Fact]
-        public void TestFindMatch_ReturOkObject_ValueIsListOfServicesDTO_PaginationHeaderTotalEqualsListCount()
+        public void TestFindMatch_ReturnOkObject_ValueIsListOfServicesDTO_PaginationHeaderTotalEqualsListCount()
         {
-            entityService.Setup(x => x.FindMatch(It.IsAny<Service>(), It.IsAny<int>(), It.IsAny<int>()))
+            entityService.Setup(x => x.FindMatch(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
                 .Returns(pagedList.Set(l => l.Total = pagedList.Count));
             mapper.Setup(x => 
                 x.Map<IEnumerable<ServiceDTO>>(It.IsAny<IEnumerable<Service>>()))
                     .Returns(dtoList);
 
-            var actionResult = controller.FindMatch(dtoList[0], It.IsAny<int>(), It.IsAny<int>());
+            var actionResult = controller.FindMatch("extract", It.IsAny<int>(), It.IsAny<int>());
 
             Assert.IsType<OkObjectResult>(actionResult.Result);
             Assert.IsType<List<ServiceDTO>>(((OkObjectResult)actionResult.Result).Value);

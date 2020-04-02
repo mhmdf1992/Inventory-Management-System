@@ -61,21 +61,21 @@ namespace InventoryManagementSystem.Test.ControllersTest
 
         [Fact]
         public void TestFindMatch_ReturnBadRequestIfItemIsNull(){
-            var actionResult = controller.FindMatch(item: null, It.IsAny<int>(), It.IsAny<int>());
+            var actionResult = controller.FindMatch(txt: null, It.IsAny<int>(), It.IsAny<int>());
 
             Assert.IsType<BadRequestResult>(actionResult.Result);
         }
 
         [Fact]
-        public void TestFindMatch_ReturOkObject_ValueIsListOfItemsDTO_PaginationHeaderTotalEqualsListCount()
+        public void TestFindMatch_ReturnOkObject_ValueIsListOfItemsDTO_PaginationHeaderTotalEqualsListCount()
         {
-            entityService.Setup(x => x.FindMatch(It.IsAny<Item>(), It.IsAny<int>(), It.IsAny<int>()))
+            entityService.Setup(x => x.FindMatch(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>()))
                 .Returns(pagedList.Set(l => l.Total = pagedList.Count));
             mapper.Setup(x => 
                 x.Map<IEnumerable<ItemDTO>>(It.IsAny<IEnumerable<Item>>()))
                     .Returns(dtoList);
 
-            var actionResult = controller.FindMatch(dtoList[0], It.IsAny<int>(), It.IsAny<int>());
+            var actionResult = controller.FindMatch("snips", It.IsAny<int>(), It.IsAny<int>());
 
             Assert.IsType<OkObjectResult>(actionResult.Result);
             Assert.IsType<List<ItemDTO>>(((OkObjectResult)actionResult.Result).Value);

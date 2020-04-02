@@ -60,8 +60,22 @@ namespace InventoryManagementSystem.Test.ServicesTest
             var result = entityService.FindMatch(list[0], 0, 1);
 
             Assert.IsType<PagedList<User>>(result);
-            Assert.Equal(result.Count, 1);
-            Assert.Equal(result.Total, list.Count);
+            Assert.Single(result);
+            Assert.Equal(list.Count, result.Total);
+        }
+
+        [Fact]
+        public void TestFindMatchString_ReturnPagedListOfUser_ListCountEqualsTake_TotalEqualsQueriedListCount(){
+            unitOfWork.Setup(
+                x => x.UserRepository.Get( It.IsAny<Expression<Func<User, bool>>>(),
+                 It.IsAny<Func<IQueryable<User>, IOrderedQueryable<User>>>(),
+                 It.IsAny<string>())).Returns(list);
+
+            var result = entityService.FindMatch("jackie", 0, 1);
+
+            Assert.IsType<PagedList<User>>(result);
+            Assert.Single(result);
+            Assert.Equal(list.Count, result.Total);
         }
 
         [Fact]
