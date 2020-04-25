@@ -3,7 +3,7 @@
     padding: 10px;
     opacity: 0.7;
     border-radius: 4px;
-    border-left: #f48024 3px solid;
+    /* border-left: #f48024 3px solid; */
     box-shadow: 0 0 10px 0 #f0ecec;
     position: relative;
 }

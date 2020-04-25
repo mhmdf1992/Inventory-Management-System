@@ -56,12 +56,7 @@ namespace InventoryManagementSystem.Api
                     DateTime.UtcNow.AddHours(1)))
                 .AddScoped<IProductService<Item>>(x => new ItemService(x.GetRequiredService<IUnitOfWork>()))
                 .AddScoped<IProductService<Service>>(x => new ServiceService(x.GetRequiredService<IUnitOfWork>()))
-                .AddCors(options =>{
-                    options.AddDefaultPolicy(builder =>{
-                        builder.WithOrigins("http://localhost:3000").AllowAnyHeader().AllowAnyMethod()
-                            .WithExposedHeaders("X-Pagination");
-                    });
-                })
+                .AddCors()
                 .AddAuthentication(x =>{
                     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                     x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -91,11 +86,9 @@ namespace InventoryManagementSystem.Api
             }
 
             app.UseAuthentication()
-                .UseAuthorization()
-                .UseCors(builder => builder.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod())
                 .UseHttpsRedirection()
                 .UseRouting()
-                .UseCors()
+                .UseCors(b => b.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().WithExposedHeaders("X-Pagination"))
                 .UseAuthorization()
                 .UseEndpoints(endpoints =>{
                     endpoints.MapControllers();

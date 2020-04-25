@@ -6,13 +6,13 @@ const AuthService = {
         return this.getAccessToken() ? JSON.parse(atob(this.getAccessToken().split('.')[1])) : null;
     },
     setAccessToken(token){
-        localStorage.setItem('access_token', token);
+        return new Promise(resolve => resolve(localStorage.setItem('access_token',token)));
     },
     getAccessToken(){
         return localStorage.getItem('access_token');
     },
     removeAccessToken(){
-        localStorage.removeItem('access_token');
+        return new Promise(resolve => resolve(localStorage.removeItem('access_token')));
     }
 }
 export default AuthService;

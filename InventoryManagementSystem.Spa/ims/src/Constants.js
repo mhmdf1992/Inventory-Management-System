@@ -1,5 +1,5 @@
 const Constants = {
-        ApiUrl: 'https://localhost:5001/api/v1',
+        ApiUrl: `http://${window.location.hostname}:5000/api/v1`,
         Endpoints: {
             Item: 'Items',
             Service: 'Services',

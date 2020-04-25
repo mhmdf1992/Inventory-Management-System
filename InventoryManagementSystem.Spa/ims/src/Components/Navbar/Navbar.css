@@ -3,31 +3,9 @@
   }
 
 .navbar-link-logo{
+  margin-left: 50px;
   text-decoration: none;
   color: inherit;
-  padding: 5px 15px 5px 0px;
-}
-
-.navbar-link{
-  text-decoration: none;
-  color: inherit;
-  opacity: 0.7;
-  padding: 5px 15px 5px 15px;
-  border-radius: 10px;
-}
-
-.navbar-link:hover{
-  background-color: #e4e4e4;
-}
-
-.navbar-link-active{
-  background-color: #f48024;
-  color: #ffffff;
-}
-
-.navbar-link-active:hover{
-  background-color: #f48024;
-  color: #ffffff;
 }
 
 .auth-panel{
@@ -37,7 +15,7 @@
 .auth-panel .login{
   cursor: pointer;
   border-radius: 2px;
-  box-shadow: 0 0 10px 0 #b39f9f;
+  box-shadow: 0 0 10px 0 #e7dede;
   font-size: 14px; 
   padding: 6px;
   margin-right: 10px;
@@ -46,7 +24,7 @@
 .auth-panel .register{
   cursor: pointer;
   border-radius: 2px;
-  box-shadow: 0 0 10px 0 #b39f9f;
+  box-shadow: 0 0 10px 0 #e7dede;
   font-size: 14px; 
   padding: 6px;
 }
@@ -65,7 +43,7 @@
 .user-profile .user{
   cursor: pointer;
   border-radius: 50%;
-  border: #e2e2e2 2px solid;
+  border: #e2e2e2 2px transparent;
   box-shadow: 0 0 10px 0 #b39f9f;
   font-weight: bolder;
   background-color: #f48024;

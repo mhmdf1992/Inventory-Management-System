@@ -1,9 +1,9 @@
 import React from 'react'
 
-const Home = () => {
+const Dashboard = () => {
     return (
         <p>Inventory Management System is a system to manage stores</p>
     )
 }
 
-export default Home;
+export default Dashboard;

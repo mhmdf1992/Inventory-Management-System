@@ -1,15 +1,28 @@
 .paging-bar{
     text-align: center;
+    max-width: 350px;
+    margin: auto;
 }
 
 .nav-button{
-    border-radius: 4px;
-    padding: 5px 10px 5px 10px;
-    border: #e4e4e4 2px solid;
-    box-shadow: 0 0 10px 0 #f0ecec;
+    padding: 2px 7px 3px 7px;
     background-color: #ffffff;
+    border: 0;
+    border-radius: 2px;
     cursor: pointer;
-    margin-right: 10px;
+    margin-right: 1px;
+}
+
+.nav-button:first-child{
+    margin-right: 5px;
+}
+
+.nav-button.hidden{
+    display: none;
+}
+
+.nav-button:last-child{
+    margin-left: 5px;
 }
 
 .nav-button:hover{
