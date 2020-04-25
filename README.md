@@ -3,7 +3,7 @@ system to manage inventory, clients, suppliers, sales and purchases
 # Programming Languages And Frameworks
 .NETCORE C# webapi, Xunit test and React spa
 # Features
-JWT authentication
+JWT authentication, Responsive
 # Getting Started
 - dotnet core sdk 3.1, nodejs v 12
 - clone repository
